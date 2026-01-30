@@ -3,21 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Red Social</title>
+    <title>ForoFoos</title>
     <style>
-        body { font-family: sans-serif; background: #f0f2f5; padding: 20px; }
-        .post { background: white; padding: 15px; margin-bottom: 10px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        :root { --primary: #1877f2; --bg: #f0f2f5; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto; background: var(--bg); margin: 0; padding-top: 60px; }
+        
+        /* Barra superior */
+        nav { background: var(--primary); color: white; padding: 10px 20px; position: fixed; top: 0; width: 100%; box-shadow: 0 2px 4px rgba(0,0,0,0.1); z-index: 1000; font-weight: bold; font-size: 20px; }
+        
+        .container { max-width: 500px; margin: auto; padding: 15px; }
+
+        /* Formulario de publicación */
+        .publish-box { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        textarea { width: 100%; border: none; background: #f0f2f5; border-radius: 20px; padding: 12px; resize: none; outline: none; box-sizing: border-box; font-size: 16px; }
+        button { background: var(--primary); color: white; border: none; width: 100%; padding: 10px; border-radius: 6px; font-weight: bold; margin-top: 10px; cursor: pointer; }
+
+        /* Tarjetas de publicaciones */
+        .post { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.1); margin-bottom: 15px; }
+        .post-user { font-weight: bold; color: #1c1e21; margin-bottom: 5px; display: block; }
+        .post-content { font-size: 17px; color: #1c1e21; line-height: 1.4; }
+        .post-date { font-size: 12px; color: #65676b; margin-top: 10px; display: block; }
     </style>
 </head>
 <body>
-    <h1>Bienvenido a ForoFoos</h1>
-    <div id="feed">
-        <% posts.forEach(post => { %>
-            <div class="post">
-                <p><%= post.contenido %></p>
-                <small><%= post.fecha_publicacion %></small>
-            </div>
-        <% }) %>
+    <nav>ForoFoos</nav>
+
+    <div class="container">
+        <div class="publish-box">
+            <form action="/publicar" method="POST">
+                <textarea name="contenido" placeholder="¿Qué estás pensando?" rows="3" required></textarea>
+                <button type="submit">Publicar</button>
+            </form>
+        </div>
+
+        <div id="feed">
+            <% posts.forEach(post => { %>
+                <div class="post">
+                    <span class="post-user">Usuario Anónimo</span>
+                    <div class="post-content"><%= post.contenido %></div>
+                    <span class="post-date"><%= post.fecha_publicacion.toLocaleString() %></span>
+                </div>
+            <% }) %>
+        </div>
     </div>
 </body>
 </html>

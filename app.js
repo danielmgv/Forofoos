@@ -30,4 +30,15 @@ const HOST = '0.0.0.0'; // Esto permite conexiones de otros dispositivos en la r
 app.listen(PORT, HOST, () => {
     console.log(`🚀 Servidor corriendo en: http://192.168.1.100:${PORT}`);
 }); 
+// Middleware para leer datos del formulario
+app.use(express.urlencoded({ extended: true }));
+
+app.post('/publicar', (req, res) => {
+    const { contenido } = req.body;
+    const query = 'INSERT INTO publicaciones (contenido, usuario_id) VALUES (?, 1)';
+    db.query(query, [contenido], (err) => {
+        if (err) throw err;
+        res.redirect('/'); // Vuelve al inicio para ver el nuevo post
+    });
+});
 
