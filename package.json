@@ -41,6 +41,7 @@
     "lint-staged": "^16.2.7",
     "nodemon": "^2.0.0",
     "prettier": "^3.8.1",
+    "prettier-plugin-ejs": "^1.0.3",
     "supertest": "^6.3.0"
   },
   "lint-staged": {
