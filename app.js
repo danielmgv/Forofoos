@@ -27,7 +27,8 @@ app.use('/', authRoutes);
 app.use('/', require('./src/routes/publicaciones'));
 
 // Loguear rutas en startup (temporal)
-setImmediate(() => {
+// Función pública para listar rutas. Se debe llamar después de arrancar el servidor (ej. desde server.js)
+app.logRegisteredRoutes = () => {
   try {
     const routes = [];
     const stack = app._router && app._router.stack;
@@ -45,7 +46,7 @@ setImmediate(() => {
   } catch (err) {
     console.error('[WARN] No se pudieron listar las rutas', err);
   }
-});
+};
 
 // Exportar app para tests y server
 module.exports = app;
