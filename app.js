@@ -30,13 +30,18 @@ app.use('/', require('./src/routes/publicaciones'));
 setImmediate(() => {
   try {
     const routes = [];
-    app._router.stack.forEach((mw) => {
-      if (mw.route) {
-        const methods = Object.keys(mw.route.methods).join(',');
-        routes.push(`${methods} ${mw.route.path}`);
-      }
-    });
-    console.log('[INFO] Rutas registradas:\n' + routes.join('\n'));
+    const stack = app._router && app._router.stack;
+    if (stack && Array.isArray(stack)) {
+      stack.forEach((mw) => {
+        if (mw && mw.route) {
+          const methods = Object.keys(mw.route.methods).join(',');
+          routes.push(`${methods} ${mw.route.path}`);
+        }
+      });
+      console.log('[INFO] Rutas registradas:\n' + routes.join('\n'));
+    } else {
+      console.warn('[WARN] No hay router disponible, no se listan rutas');
+    }
   } catch (err) {
     console.error('[WARN] No se pudieron listar las rutas', err);
   }
