@@ -47,13 +47,24 @@ app.logRegisteredRoutes = () => {
         // En Express 5 los layers no exponen directamente `route`, hay que comprobar mw.route o mw.handle.route
         const route = mw && (mw.route || (mw.handle && mw.handle.route));
         if (route) {
-          const methods = Object.keys(route.methods).join(',');
-          routes.push(`${methods} ${route.path}`);
+          const methods =
+            route.methods && typeof route.methods === 'object'
+              ? Object.keys(route.methods).join(',')
+              : 'ALL';
+          const pathStr = route.path || (route.regexp && route.regexp.source) || '<unknown>';
+          routes.push(`${methods} ${pathStr}`);
         } else if (mw && mw.name === 'router' && mw.handle && mw.handle.stack) {
           // Router anidado: iterar sus capas internas
           mw.handle.stack.forEach((inner) => {
             const r = inner && (inner.route || (inner.handle && inner.handle.route));
-            if (r) routes.push(`${Object.keys(r.methods).join(',')} ${r.path}`);
+            if (r) {
+              const methods =
+                r.methods && typeof r.methods === 'object'
+                  ? Object.keys(r.methods).join(',')
+                  : 'ALL';
+              const pathStr = r.path || (r.regexp && r.regexp.source) || '<unknown>';
+              routes.push(`${methods} ${pathStr}`);
+            }
           });
         }
       });
