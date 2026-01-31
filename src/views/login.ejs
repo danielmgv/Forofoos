@@ -1,0 +1,140 @@
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f0f2f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  .login-container {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    width: 85%;
+    max-width: 400px;
+    text-align: center;
+  }
+  h2 {
+    color: #1c1e21;
+    margin-bottom: 25px;
+  }
+  input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-sizing: border-box; /* Importante para el ancho */
+    font-size: 16px;
+  }
+  button {
+    width: 100%;
+    padding: 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  button:active {
+    transform: scale(0.98);
+  }
+</style>
+
+<div class="login-container">
+  <h2>SoPro, La Plataforma para dar vida a proyectos sociales</h2>
+
+  <% if (typeof error !== 'undefined' && error) { %>
+  <div
+    id="serverError"
+    style="
+      background: #ffecec;
+      color: #d8000c;
+      padding: 10px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    "
+  >
+    <%= error %>
+  </div>
+  <% } %>
+
+  <div
+    id="formError"
+    style="
+      background: #ffecec;
+      color: #d8000c;
+      padding: 10px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      display: none;
+    "
+  ></div>
+
+  <form id="loginForm" action="/login" method="POST" novalidate>
+    <input
+      id="email"
+      type="email"
+      name="email"
+      placeholder="Correo electrónico"
+      required
+      pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$"
+      title="Introduce un email válido"
+    />
+    <input id="password" type="password" name="password" placeholder="Contraseña" required />
+    <button type="submit">Entrar</button>
+  </form>
+  <p>
+    ¿No tienes cuenta?
+    <a href="/register" style="color: #007bff; text-decoration: none">Regístrate</a>
+  </p>
+</div>
+
+<script>
+  (function () {
+    const form = document.getElementById('loginForm');
+    const formError = document.getElementById('formError');
+    const serverError = document.getElementById('serverError');
+    if (serverError) {
+      serverError.style.display = 'block';
+    }
+
+    form.addEventListener('submit', function (e) {
+      formError.style.display = 'none';
+      formError.textContent = '';
+      const email = form.email.value.trim();
+      const password = form.password.value;
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      if (!emailRegex.test(email)) {
+        e.preventDefault();
+        formError.textContent = 'El email no tiene un formato válido';
+        formError.style.display = 'block';
+        form.email.focus();
+        return;
+      }
+
+      if (!password) {
+        e.preventDefault();
+        formError.textContent = 'La contraseña es obligatoria';
+        formError.style.display = 'block';
+        form.password.focus();
+        return;
+      }
+    });
+
+    form.querySelectorAll('input').forEach((inp) =>
+      inp.addEventListener('input', () => {
+        formError.style.display = 'none';
+        formError.textContent = '';
+      })
+    );
+  })();
+</script>

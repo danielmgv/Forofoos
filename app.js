@@ -1,44 +1,46 @@
+require('dotenv').config();
 const express = require('express');
-const mysql = require('mysql2');
+const session = require('express-session');
+const path = require('path');
 const app = express();
+const authRoutes = require('./src/routes/authRoutes');
 
-// Configuración de conexión a MySQL (XAMPP suele no tener contraseña por defecto)
-const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'forofoos'
-});
-
-db.connect((err) => {
-    if (err) throw err;
-    console.log('✅ Conectado a la base de datos de XAMPP');
-});
-
+// Motor de vistas
 app.set('view engine', 'ejs');
-app.use(express.urlencoded({ extended: false }));
+app.set('views', path.join(__dirname, 'src', 'views'));
 
-// Ruta principal para ver publicaciones
-app.get('/', (req, res) => {
-    db.query('SELECT * FROM publicaciones ORDER BY fecha_publicacion DESC', (err, results) => {
-        res.render('index', { posts: results });
-    });
-});
-const PORT = 3000;
-const HOST = '0.0.0.0'; // Esto permite conexiones de otros dispositivos en la red
-
-app.listen(PORT, HOST, () => {
-    console.log(`🚀 Servidor corriendo en: http://192.168.1.100:${PORT}`);
-}); 
-// Middleware para leer datos del formulario
+// Middlewares
 app.use(express.urlencoded({ extended: true }));
 
-app.post('/publicar', (req, res) => {
-    const { contenido } = req.body;
-    const query = 'INSERT INTO publicaciones (contenido, usuario_id) VALUES (?, 1)';
-    db.query(query, [contenido], (err) => {
-        if (err) throw err;
-        res.redirect('/'); // Vuelve al inicio para ver el nuevo post
+// Configuración de sesión (usa env vars)
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || 'dev_secret',
+    resave: false,
+    saveUninitialized: false,
+    cookie: { maxAge: 3600000 },
+  })
+);
+
+// Rutas
+app.use('/', authRoutes);
+app.use('/', require('./src/routes/publicaciones'));
+
+// Loguear rutas en startup (temporal)
+setImmediate(() => {
+  try {
+    const routes = [];
+    app._router.stack.forEach((mw) => {
+      if (mw.route) {
+        const methods = Object.keys(mw.route.methods).join(',');
+        routes.push(`${methods} ${mw.route.path}`);
+      }
     });
+    console.log('[INFO] Rutas registradas:\n' + routes.join('\n'));
+  } catch (err) {
+    console.error('[WARN] No se pudieron listar las rutas', err);
+  }
 });
 
+// Exportar app para tests y server
+module.exports = app;

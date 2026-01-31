@@ -1,0 +1,99 @@
+<% if (typeof error !== 'undefined' && error) { %>
+<div
+  id="serverError"
+  style="
+    background: #ffecec;
+    color: #d8000c;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+  "
+>
+  <%= error %>
+</div>
+<% } %>
+
+<div
+  id="formError"
+  style="
+    background: #ffecec;
+    color: #d8000c;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    display: none;
+  "
+></div>
+
+<form id="registerForm" action="/auth/register" method="POST" novalidate>
+  <input id="username" type="text" name="username" placeholder="Usuario" required />
+  <input
+    id="email"
+    type="email"
+    name="email"
+    placeholder="Email"
+    required
+    pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$"
+    title="Introduce un email válido"
+  />
+  <input
+    id="password"
+    type="password"
+    name="password"
+    placeholder="Contraseña"
+    required
+    minlength="8"
+  />
+  <button type="submit">Crear Cuenta</button>
+</form>
+
+<script>
+  (function () {
+    const form = document.getElementById('registerForm');
+    const formError = document.getElementById('formError');
+    const serverError = document.getElementById('serverError');
+    if (serverError) {
+      serverError.style.display = 'block';
+    }
+
+    form.addEventListener('submit', function (e) {
+      formError.style.display = 'none';
+      formError.textContent = '';
+      const username = form.username.value.trim();
+      const email = form.email.value.trim();
+      const password = form.password.value;
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      if (!username) {
+        e.preventDefault();
+        formError.textContent = 'El usuario es obligatorio';
+        formError.style.display = 'block';
+        form.username.focus();
+        return;
+      }
+
+      if (!emailRegex.test(email)) {
+        e.preventDefault();
+        formError.textContent = 'El email no tiene un formato válido';
+        formError.style.display = 'block';
+        form.email.focus();
+        return;
+      }
+
+      if (password.length < 8) {
+        e.preventDefault();
+        formError.textContent = 'La contraseña debe tener al menos 8 caracteres';
+        formError.style.display = 'block';
+        form.password.focus();
+        return;
+      }
+    });
+
+    form.querySelectorAll('input').forEach((inp) =>
+      inp.addEventListener('input', () => {
+        formError.style.display = 'none';
+        formError.textContent = '';
+      })
+    );
+  })();
+</script>
