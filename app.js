@@ -12,6 +12,9 @@ app.set('views', path.join(__dirname, 'src', 'views'));
 // Middlewares
 app.use(express.urlencoded({ extended: true }));
 
+// Servir assets estáticos (CSS, JS, imágenes)
+app.use(express.static(path.join(__dirname, 'public')));
+
 // Configuración de sesión (usa env vars)
 app.use(
   session({

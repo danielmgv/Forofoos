@@ -1,85 +1,17 @@
-<style>
-  body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Segoe UI', sans-serif;
-    background-color: #f0f2f5;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
-  .login-container {
-    background: white;
-    padding: 30px;
-    border-radius: 20px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-    width: 85%;
-    max-width: 400px;
-    text-align: center;
-  }
-  h2 {
-    color: #1c1e21;
-    margin-bottom: 25px;
-  }
-  input {
-    width: 100%;
-    padding: 12px;
-    margin: 10px 0;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    box-sizing: border-box; /* Importante para el ancho */
-    font-size: 16px;
-  }
-  button {
-    width: 100%;
-    padding: 12px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.3s;
-  }
-  button:active {
-    transform: scale(0.98);
-  }
-</style>
+<link rel="stylesheet" href="/styles.css" />
 
-<div class="login-container">
+<div class="auth-container">
   <h2>SoPro, La Plataforma para dar vida a proyectos sociales</h2>
 
   <% if (typeof error !== 'undefined' && error) { %>
-  <div
-    id="serverError"
-    style="
-      background: #ffecec;
-      color: #d8000c;
-      padding: 10px;
-      border-radius: 8px;
-      margin-bottom: 10px;
-    "
-  >
-    <%= error %>
-  </div>
+  <div id="serverError" class="alert"><%= error %></div>
   <% } %>
 
-  <div
-    id="formError"
-    style="
-      background: #ffecec;
-      color: #d8000c;
-      padding: 10px;
-      border-radius: 8px;
-      margin-bottom: 10px;
-      display: none;
-    "
-  ></div>
+  <div id="formError" class="alert hidden"></div>
 
   <form id="loginForm" action="/login" method="POST" novalidate>
     <input
+      class="input"
       id="email"
       type="email"
       name="email"
@@ -88,12 +20,18 @@
       pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$"
       title="Introduce un email válido"
     />
-    <input id="password" type="password" name="password" placeholder="Contraseña" required />
-    <button type="submit">Entrar</button>
+    <input
+      class="input"
+      id="password"
+      type="password"
+      name="password"
+      placeholder="Contraseña"
+      required
+    />
+    <button class="btn-primary" type="submit">Entrar</button>
   </form>
-  <p>
-    ¿No tienes cuenta?
-    <a href="/register" style="color: #007bff; text-decoration: none">Regístrate</a>
+  <p class="footer-note">
+    ¿No tienes cuenta? <a href="/register" class="link-primary">Regístrate</a>
   </p>
 </div>
 

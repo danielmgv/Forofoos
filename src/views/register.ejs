@@ -1,51 +1,37 @@
-<% if (typeof error !== 'undefined' && error) { %>
-<div
-  id="serverError"
-  style="
-    background: #ffecec;
-    color: #d8000c;
-    padding: 10px;
-    border-radius: 8px;
-    margin-bottom: 10px;
-  "
->
-  <%= error %>
+<link rel="stylesheet" href="/styles.css" />
+
+<div class="auth-container">
+  <h2>Crear cuenta</h2>
+  <% if (typeof error !== 'undefined' && error) { %>
+  <div id="serverError" class="alert"><%= error %></div>
+  <% } %>
+
+  <div id="formError" class="alert hidden"></div>
+
+  <form id="registerForm" action="/auth/register" method="POST" novalidate>
+    <input class="input" id="username" type="text" name="username" placeholder="Usuario" required />
+    <input
+      class="input"
+      id="email"
+      type="email"
+      name="email"
+      placeholder="Email"
+      required
+      pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$"
+      title="Introduce un email válido"
+    />
+    <input
+      class="input"
+      id="password"
+      type="password"
+      name="password"
+      placeholder="Contraseña"
+      required
+      minlength="8"
+    />
+    <button class="btn-primary" type="submit">Crear Cuenta</button>
+  </form>
 </div>
-<% } %>
-
-<div
-  id="formError"
-  style="
-    background: #ffecec;
-    color: #d8000c;
-    padding: 10px;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    display: none;
-  "
-></div>
-
-<form id="registerForm" action="/auth/register" method="POST" novalidate>
-  <input id="username" type="text" name="username" placeholder="Usuario" required />
-  <input
-    id="email"
-    type="email"
-    name="email"
-    placeholder="Email"
-    required
-    pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$"
-    title="Introduce un email válido"
-  />
-  <input
-    id="password"
-    type="password"
-    name="password"
-    placeholder="Contraseña"
-    required
-    minlength="8"
-  />
-  <button type="submit">Crear Cuenta</button>
-</form>
 
 <script>
   (function () {
