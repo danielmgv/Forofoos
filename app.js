@@ -23,23 +23,39 @@ app.use(
 );
 
 // Rutas
+console.log('[DEBUG] Registrando authRoutes...');
 app.use('/', authRoutes);
+console.log('[DEBUG] authRoutes registradas');
+console.log('[DEBUG] app._router after authRoutes:', !!app._router, typeof app._router);
+console.log('[DEBUG] Registrando publicaciones route...');
 app.use('/', require('./src/routes/publicaciones'));
+console.log('[DEBUG] publicaciones registradas');
+console.log('[DEBUG] app._router after publicaciones:', !!app._router, typeof app._router);
 
 // Loguear rutas en startup (temporal)
 // Función pública para listar rutas. Se debe llamar después de arrancar el servidor (ej. desde server.js)
 app.logRegisteredRoutes = () => {
   try {
     const routes = [];
-    const stack = app._router && app._router.stack;
+    // Compatibilidad: Express 4 usa app._router, Express 5 usa app.router
+    const stack = (app._router && app._router.stack) || (app.router && app.router.stack);
     if (stack && Array.isArray(stack)) {
       stack.forEach((mw) => {
-        if (mw && mw.route) {
-          const methods = Object.keys(mw.route.methods).join(',');
-          routes.push(`${methods} ${mw.route.path}`);
+        // En Express 5 los layers no exponen directamente `route`, hay que comprobar mw.route o mw.handle.route
+        const route = mw && (mw.route || (mw.handle && mw.handle.route));
+        if (route) {
+          const methods = Object.keys(route.methods).join(',');
+          routes.push(`${methods} ${route.path}`);
+        } else if (mw && mw.name === 'router' && mw.handle && mw.handle.stack) {
+          // Router anidado: iterar sus capas internas
+          mw.handle.stack.forEach((inner) => {
+            const r = inner && (inner.route || (inner.handle && inner.handle.route));
+            if (r) routes.push(`${Object.keys(r.methods).join(',')} ${r.path}`);
+          });
         }
       });
-      console.log('[INFO] Rutas registradas:\n' + routes.join('\n'));
+      if (routes.length) console.log('[INFO] Rutas registradas:\n' + routes.join('\n'));
+      else console.warn('[WARN] No se encontraron rutas registradas');
     } else {
       console.warn('[WARN] No hay router disponible, no se listan rutas');
     }
