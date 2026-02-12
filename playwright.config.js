@@ -13,6 +13,7 @@ module.exports = {
     command: 'node server.js',
     url: 'http://localhost:3000',
     timeout: 120 * 1000,
-    reuseExistingServer: !process.env.CI,
+    reuseExistingServer: false,
+    env: { SMTP_ALLOW_INSECURE: 'true', LOG_DIR: process.env.LOG_DIR || 'logs' },
   },
 };

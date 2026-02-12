@@ -1,0 +1,184 @@
+[2026-01-31T22:03:07.250Z] [INFO] 🚀 Servidor corriendo en: http://0.0.0.0:3000
+[2026-01-31T22:06:55.987Z] [INFO] test line 0 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+[2026-01-31T22:06:55.991Z] [INFO] test line 1 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+[2026-01-31T22:06:55.993Z] [INFO] test line 5 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+[2026-01-31T22:06:55.994Z] [INFO] test line 6 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+[2026-01-31T22:06:55.994Z] [INFO] test line 7 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+[2026-01-31T22:06:55.995Z] [INFO] test line 8 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+[2026-01-31T22:06:55.995Z] [INFO] test line 9 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+[2026-01-31T22:06:55.992Z] [INFO] test line 2 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+[2026-01-31T22:06:55.992Z] [INFO] test line 3 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+[2026-01-31T22:06:55.993Z] [INFO] test line 4 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+[2026-01-31T22:06:55.998Z] [INFO] test line 12 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+[2026-01-31T22:06:55.998Z] [INFO] test line 13 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+[2026-01-31T22:06:55.999Z] [INFO] test line 14 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+[2026-01-31T22:06:55.996Z] [INFO] test line 10 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+[2026-01-31T22:06:55.999Z] [INFO] test line 15 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+[2026-01-31T22:06:56.000Z] [INFO] test line 16 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+[2026-01-31T22:06:55.997Z] [INFO] test line 11 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+[2026-01-31T22:06:56.001Z] [INFO] test line 19 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+[2026-01-31T22:06:56.000Z] [INFO] test line 18 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+[2026-01-31T22:06:56.002Z] [INFO] test line 20 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+[2026-01-31T22:06:56.004Z] [INFO] test line 21 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+[2026-01-31T22:06:56.000Z] [INFO] test line 17 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+[2026-01-31T22:06:56.008Z] [INFO] test line 23 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+[2026-01-31T22:06:56.010Z] [INFO] test line 25 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+[2026-01-31T22:06:56.011Z] [INFO] test line 27 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+[2026-01-31T22:06:56.013Z] [INFO] test line 28 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+[2026-01-31T22:06:56.013Z] [INFO] test line 29 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+[2026-01-31T22:06:56.017Z] [INFO] test line 30 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+[2026-01-31T22:06:56.018Z] [INFO] test line 31 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+[2026-01-31T22:06:56.018Z] [INFO] test line 32 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+[2026-01-31T22:06:56.019Z] [INFO] test line 33 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+[2026-01-31T22:06:56.019Z] [INFO] test line 34 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+[2026-01-31T22:06:56.020Z] [INFO] test line 35 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+[2026-01-31T22:06:56.020Z] [INFO] test line 36 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+[2026-01-31T22:06:56.021Z] [INFO] test line 37 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+[2026-01-31T22:06:56.022Z] [INFO] test line 38 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+[2026-01-31T22:06:56.022Z] [INFO] test line 39 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+[2026-01-31T22:06:56.009Z] [INFO] test line 24 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+[2026-01-31T22:06:56.006Z] [INFO] test line 22 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+[2026-01-31T22:06:56.010Z] [INFO] test line 26 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+[2026-01-31T22:09:38.856Z] [INFO] 🚀 Servidor corriendo en: http://0.0.0.0:3000
+[2026-01-31T22:12:59.228Z] [INFO] 🚀 Servidor corriendo en: http://0.0.0.0:3000
+[2026-01-31T22:12:59.236Z] [ERROR] DB connection failed at startup Error
+    at PromisePool.execute (F:\ForoFoos\node_modules\mysql2\lib\promise\pool.js:54:22)
+    at Object.execute (F:\ForoFoos\src\config\db.js:24:35)
+    at checkDB (F:\ForoFoos\server.js:20:14)
+    at Object.<anonymous> (F:\ForoFoos\server.js:25:3)
+    at Module._compile (node:internal/modules/cjs/loader:1761:14)
+    at Object..js (node:internal/modules/cjs/loader:1893:10)
+    at Module.load (node:internal/modules/cjs/loader:1481:32)
+    at Module._load (node:internal/modules/cjs/loader:1300:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:328:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:245:24)
+[2026-01-31T22:13:32.235Z] [ERROR] Error
+    at PromisePool.execute (F:\ForoFoos\node_modules\mysql2\lib\promise\pool.js:54:22)
+    at Object.execute (F:\ForoFoos\src\config\db.js:24:35)
+    at exports.register (F:\ForoFoos\src\controllers\authController.js:61:29)
+    at F:\ForoFoos\src\routes\authRoutes.js:23:26
+    at Layer.handleRequest (F:\ForoFoos\node_modules\router\lib\layer.js:152:17)
+    at next (F:\ForoFoos\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (F:\ForoFoos\node_modules\router\lib\route.js:117:3)
+    at handle (F:\ForoFoos\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (F:\ForoFoos\node_modules\router\lib\layer.js:152:17)
+    at F:\ForoFoos\node_modules\router\index.js:295:15
+[2026-01-31T22:14:51.479Z] [ERROR] Error: No database selected
+    at PromisePool.execute (F:\ForoFoos\node_modules\mysql2\lib\promise\pool.js:54:22)
+    at Object.execute (F:\ForoFoos\src\config\db.js:24:35)
+    at exports.register (F:\ForoFoos\src\controllers\authController.js:61:29)
+    at F:\ForoFoos\src\routes\authRoutes.js:23:26
+    at Layer.handleRequest (F:\ForoFoos\node_modules\router\lib\layer.js:152:17)
+    at next (F:\ForoFoos\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (F:\ForoFoos\node_modules\router\lib\route.js:117:3)
+    at handle (F:\ForoFoos\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (F:\ForoFoos\node_modules\router\lib\layer.js:152:17)
+    at F:\ForoFoos\node_modules\router\index.js:295:15
+[2026-01-31T22:17:14.939Z] [INFO] 🚀 Servidor corriendo en: http://0.0.0.0:3000
+[2026-01-31T22:17:14.966Z] [INFO] DB connection OK
+[2026-01-31T22:17:23.634Z] [ERROR] Error: No database selected
+    at PromisePool.execute (F:\ForoFoos\node_modules\mysql2\lib\promise\pool.js:54:22)
+    at Object.execute (F:\ForoFoos\src\config\db.js:24:35)
+    at exports.register (F:\ForoFoos\src\controllers\authController.js:61:29)
+    at F:\ForoFoos\src\routes\authRoutes.js:23:26
+    at Layer.handleRequest (F:\ForoFoos\node_modules\router\lib\layer.js:152:17)
+    at next (F:\ForoFoos\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (F:\ForoFoos\node_modules\router\lib\route.js:117:3)
+    at handle (F:\ForoFoos\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (F:\ForoFoos\node_modules\router\lib\layer.js:152:17)
+    at F:\ForoFoos\node_modules\router\index.js:295:15
+[2026-01-31T22:20:38.232Z] [INFO] 🚀 Servidor corriendo en: http://0.0.0.0:3000
+[2026-01-31T22:20:38.258Z] [INFO] DB connection OK
+[2026-01-31T22:24:59.645Z] [INFO] 🚀 Servidor corriendo en: http://0.0.0.0:3000
+[2026-01-31T22:24:59.673Z] [INFO] DB connection OK
+[2026-01-31T22:25:33.050Z] [ERROR] Error: Unknown column 'verification_token' in 'field list'
+    at PromisePool.execute (F:\ForoFoos\node_modules\mysql2\lib\promise\pool.js:54:22)
+    at Object.execute (F:\ForoFoos\src\config\db.js:24:35)
+    at exports.register (F:\ForoFoos\src\controllers\authController.js:84:16)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    at async F:\ForoFoos\src\routes\authRoutes.js:23:5
+[2026-01-31T22:26:28.575Z] [INFO] Applying migration: adding verification columns to users
+[2026-01-31T22:26:36.928Z] [INFO] 🚀 Servidor corriendo en: http://0.0.0.0:3000
+[2026-01-31T22:26:36.957Z] [INFO] DB connection OK
+[2026-01-31T22:27:03.379Z] [ERROR] Error: Duplicate entry '345345' for key 'username'
+    at PromisePool.execute (F:\ForoFoos\node_modules\mysql2\lib\promise\pool.js:54:22)
+    at Object.execute (F:\ForoFoos\src\config\db.js:24:35)
+    at exports.register (F:\ForoFoos\src\controllers\authController.js:73:31)
+    at async F:\ForoFoos\src\routes\authRoutes.js:23:5
+[2026-01-31T22:27:31.538Z] [ERROR] sendVerificationEmail error Error: Cannot find module 'nodemailer'
+Require stack:
+- F:\ForoFoos\src\utils\mailer.js
+- F:\ForoFoos\src\controllers\authController.js
+- F:\ForoFoos\src\routes\authRoutes.js
+- F:\ForoFoos\app.js
+- F:\ForoFoos\server.js
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1421:15)
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1059:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1064:22)
+    at Module._load (node:internal/modules/cjs/loader:1227:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:328:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:245:24)
+    at Module.require (node:internal/modules/cjs/loader:1504:12)
+    at require (node:internal/modules/helpers:152:16)
+    at Object.sendVerificationEmail (F:\ForoFoos\src\utils\mailer.js:7:26)
+    at exports.register (F:\ForoFoos\src\controllers\authController.js:93:22)
+[2026-01-31T22:27:31.539Z] [WARN] No se pudo enviar el email de verificación, link: http://localhost:3000/auth/verify?token=07cce2a5968151ffeec42fa64d0dd54c23d59328ad6fbd4cd16118db64e2cbf0
+[2026-01-31T22:28:40.591Z] [INFO] 🚀 Servidor corriendo en: http://0.0.0.0:3000
+[2026-01-31T22:28:40.618Z] [INFO] DB connection OK
+[2026-01-31T22:29:02.206Z] [WARN] nodemailer not installed; logging verification link instead: http://localhost:3000/auth/verify?token=17fcd936f576ea7c1241237d49a9909c8eb1e1b0640a2c234cf58144ebfe370a
+[2026-01-31T22:29:02.207Z] [INFO] Verification link: http://localhost:3000/auth/verify?token=17fcd936f576ea7c1241237d49a9909c8eb1e1b0640a2c234cf58144ebfe370a
+[2026-01-31T22:31:58.952Z] [INFO] 🚀 Servidor corriendo en: http://0.0.0.0:3000
+[2026-01-31T22:31:58.983Z] [INFO] DB connection OK
+[2026-01-31T22:33:04.173Z] [INFO] 🚀 Servidor corriendo en: http://0.0.0.0:3000
+[2026-01-31T22:33:04.200Z] [INFO] DB connection OK
+[2026-01-31T22:33:26.519Z] [ERROR] sendVerificationEmail error Error: self-signed certificate in certificate chain
+    at TLSSocket.onConnectSecure (node:_tls_wrap:1649:34)
+    at TLSSocket.emit (node:events:508:28)
+    at TLSSocket._finishInit (node:_tls_wrap:1094:8)
+    at ssl.onhandshakedone (node:_tls_wrap:880:12)
+[2026-01-31T22:33:26.520Z] [WARN] No se pudo enviar el email de verificación, link: http://localhost:3000/auth/verify?token=dec31e0ec051414edf80fb8bf1bfe808dbecf3ff9cb3f34e44a14602742d1c3d
+[2026-01-31T22:34:21.058Z] [ERROR] sendVerificationEmail error Error: self-signed certificate in certificate chain
+    at TLSSocket.onConnectSecure (node:_tls_wrap:1649:34)
+    at TLSSocket.emit (node:events:508:28)
+    at TLSSocket._finishInit (node:_tls_wrap:1094:8)
+    at ssl.onhandshakedone (node:_tls_wrap:880:12)
+[2026-01-31T22:34:56.969Z] [INFO] Email preview URL: https://ethereal.email/message/aX6Dj3eONYxuKQfHaX6DkJSkaEEGSFg2AAAAASKT24lN9OEyrufY56duODs
+[2026-01-31T22:34:56.970Z] [INFO] Verification email sent to devnull@example.com
+[2026-01-31T22:36:29.736Z] [INFO] 🚀 Servidor corriendo en: http://0.0.0.0:3000
+[2026-01-31T22:36:29.761Z] [INFO] DB connection OK
+[2026-01-31T22:36:34.754Z] [ERROR] sendVerificationEmail error Error: self-signed certificate in certificate chain
+    at TLSSocket.onConnectSecure (node:_tls_wrap:1649:34)
+    at TLSSocket.emit (node:events:508:28)
+    at TLSSocket._finishInit (node:_tls_wrap:1094:8)
+    at ssl.onhandshakedone (node:_tls_wrap:880:12)
+[2026-01-31T22:36:34.754Z] [WARN] No se pudo enviar el email de verificación, link: http://localhost:3000/auth/verify?token=16c5c5b000567595e9ed43ea537e082c828b21e642689f4860a987ee81605f1b
+[2026-01-31T22:37:21.046Z] [INFO] 🚀 Servidor corriendo en: http://0.0.0.0:3000
+[2026-01-31T22:37:21.070Z] [INFO] DB connection OK
+[2026-01-31T22:37:26.529Z] [INFO] Email preview URL: https://ethereal.email/message/aX6EJXeONYxuKRJvaX6EJkSUF0ht4f1pAAAAAWwtgMuclAWySoAaj-vnD-U
+[2026-01-31T22:37:26.529Z] [INFO] Verification email sent to e2e_1769899044180@example.com
+[2026-01-31T22:37:59.300Z] [INFO] 🚀 Servidor corriendo en: http://0.0.0.0:3000
+[2026-01-31T22:37:59.327Z] [INFO] DB connection OK
+[2026-01-31T22:38:23.637Z] [ERROR] sendVerificationEmail error Error: self-signed certificate in certificate chain
+    at TLSSocket.onConnectSecure (node:_tls_wrap:1649:34)
+    at TLSSocket.emit (node:events:508:28)
+    at TLSSocket._finishInit (node:_tls_wrap:1094:8)
+    at ssl.onhandshakedone (node:_tls_wrap:880:12)
+[2026-01-31T22:38:23.638Z] [WARN] No se pudo enviar el email de verificación, link: http://localhost:3000/auth/verify?token=dc847fa2f172ac9332ca89cd6bce930497c6cf89445806833597e8905bd37d04
+[2026-01-31T22:38:52.611Z] [INFO] 🚀 Servidor corriendo en: http://0.0.0.0:3000
+[2026-01-31T22:38:52.644Z] [INFO] DB connection OK
+[2026-01-31T22:39:41.725Z] [INFO] 🚀 Servidor corriendo en: http://0.0.0.0:3000
+[2026-01-31T22:39:41.752Z] [INFO] DB connection OK
+[2026-01-31T22:39:47.548Z] [INFO] Email preview URL: https://ethereal.email/message/aX6EsXeONYxuKRsMaX6Es7G7FRPhcGUfAAAAATl6sn3NJhmZhLW-1bl6Ydk
+[2026-01-31T22:39:47.549Z] [INFO] Verification email sent to e2e_1769899184896@example.com
+[2026-01-31T22:40:50.071Z] [INFO] 🚀 Servidor corriendo en: http://0.0.0.0:3000
+[2026-01-31T22:40:50.098Z] [INFO] DB connection OK
+[2026-01-31T22:40:55.746Z] [INFO] Email preview URL: https://ethereal.email/message/aX6E9neONYxuKR8paX6E95SkaEEGSFiEAAAAAQY-OjNXeIVqNykaLbsZEtY
+[2026-01-31T22:40:55.746Z] [INFO] Verification email sent to e2e_1769899253194@example.com
+[2026-01-31T22:46:14.554Z] [INFO] 🚀 Servidor corriendo en: http://0.0.0.0:3000
+[2026-01-31T22:46:14.581Z] [INFO] DB connection OK
+[2026-01-31T22:46:36.751Z] [ERROR] sendVerificationEmail error Error: self-signed certificate in certificate chain
+    at TLSSocket.onConnectSecure (node:_tls_wrap:1649:34)
+    at TLSSocket.emit (node:events:508:28)
+    at TLSSocket._finishInit (node:_tls_wrap:1094:8)
+    at ssl.onhandshakedone (node:_tls_wrap:880:12)
+[2026-01-31T22:46:36.752Z] [WARN] No se pudo enviar el email de verificación {"to":"danielmgv@gmail.com","link":"http://localhost:3000/auth/verify?token=61885003c1de417a2492a8e5645f6e9433ba37d109cab8371e2b8ac1f627a1f5","err":"self-signed certificate in certificate chain"}

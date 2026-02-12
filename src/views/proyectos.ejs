@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proyectos - ForoFoos</title>
+  <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css">
+</head>
+<body>
+  <div class="container">
+    <nav>
+      <ul>
+        <li><strong>ForoFoos</strong></li>
+      </ul>
+      <ul>
+        <li><a href="/dashboard">Dashboard</a></li>
+        <li><a href="/proyectos" class="secondary" aria-current="page">Proyectos</a></li>
+        <li><a href="/configuracion">Configuración</a></li>
+        <li><a href="/logout">Cerrar Sesión (<%= user.name %>)</a></li>
+      </ul>
+    </nav>
+
+    <main>
+      <hgroup>
+        <h1>Gestión de Proyectos</h1>
+        <h2>Administra tus proyectos y tareas</h2>
+      </hgroup>
+
+      <!-- Mensajes de Feedback -->
+      <% if (locals.error) { %>
+        <article style="background-color: #ffe6e6; border-color: #ffcccc; color: #cc0000; padding: 1rem;">
+          <%= error %>
+        </article>
+      <% } %>
+      <% if (locals.success) { %>
+        <article style="background-color: #e6ffe6; border-color: #ccffcc; color: #006600; padding: 1rem;">
+          <%= success %>
+        </article>
+      <% } %>
+
+      <!-- Buscador y Filtros -->
+      <div class="grid">
+        <form action="/proyectos" method="GET" role="search">
+          <fieldset role="group">
+            <input type="search" name="search" placeholder="Buscar proyectos..." value="<%= locals.search || '' %>">
+            <input type="submit" value="Buscar">
+          </fieldset>
+        </form>
+        <div style="text-align: right;">
+           <!-- Espacio reservado para acciones futuras -->
+        </div>
+      </div>
+
+      <!-- Formulario de Creación (Colapsable) -->
+      <details>
+        <summary role="button" class="outline">Crear Nuevo Proyecto</summary>
+        <article>
+          <form action="/proyectos/crear" method="POST">
+            <label>Nombre del Proyecto <input type="text" name="nombre" required></label>
+            <label>Descripción <textarea name="descripcion"></textarea></label>
+            <div class="grid">
+              <label>Fecha de Inicio <input type="date" name="fecha_inicio"></label>
+              <label>Estado
+                <select name="estado">
+                  <option value="En progreso">En progreso</option>
+                  <option value="En espera">En espera</option>
+                  <option value="Completado">Completado</option>
+                </select>
+              </label>
+            </div>
+            <button type="submit">Guardar Proyecto</button>
+          </form>
+        </article>
+      </details>
+
+      <!-- Lista de Proyectos -->
+      <% if (proyectos && proyectos.length > 0) { %>
+        <figure>
+          <table role="grid">
+            <thead>
+              <tr>
+                <th scope="col">Nombre</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Fecha</th>
+                <th scope="col" style="text-align: center;">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% proyectos.forEach(p => { %>
+                <tr>
+                  <td>
+                    <strong><%= p.nombre %></strong><br>
+                    <small><%= p.descripcion ? p.descripcion.substring(0, 50) + (p.descripcion.length > 50 ? '...' : '') : '' %></small>
+                  </td>
+                  <td><%= p.estado %></td>
+                  <td><%= new Date(p.created_at).toLocaleDateString() %></td>
+                  <td style="text-align: center;">
+                    <a href="/proyectos/editar/<%= p.id %>" role="button" class="outline small">Editar</a>
+                  </td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </figure>
+      <% } else { %>
+        <article><p>No hay proyectos para mostrar.</p></article>
+      <% } %>
+    </main>
+  </div>
+</body>
+</html>

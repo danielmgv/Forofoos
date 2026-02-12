@@ -1,131 +1,98 @@
 <!DOCTYPE html>
-<html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-    />
-    <title>ForoFoos - Inicio</title>
-    <style>
-      :root {
-        --primary: #007bff;
-        --bg: #f8f9fa;
-        --text: #333;
-      }
-      body {
-        margin: 0;
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto;
-        background-color: var(--bg);
-        color: var(--text);
-        padding-bottom: 70px;
-      }
-      /* Cabecera superior */
-      .header {
-        background: white;
-        padding: 15px;
-        text-align: center;
-        font-weight: bold;
-        border-bottom: 1px solid #ddd;
-        position: sticky;
-        top: 0;
-        z-index: 100;
-      }
-      /* Contenedor de posts */
-      .feed {
-        padding: 15px;
-      }
-      .post-card {
-        background: white;
-        border-radius: 15px;
-        padding: 15px;
-        margin-bottom: 15px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-      }
-      .post-user {
-        font-weight: bold;
-        font-size: 14px;
-        color: var(--primary);
-      }
-      .post-content {
-        margin-top: 8px;
-        font-size: 16px;
-      }
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - ForoFoos</title>
+  <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
 
-      /* Barra de navegación inferior (Estilo App) */
-      .nav-bar {
-        position: fixed;
-        bottom: 0;
-        width: 100%;
-        height: 60px;
-        background: white;
-        border-top: 1px solid #ddd;
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-      }
-      .nav-item {
-        text-align: center;
-        color: #777;
-        text-decoration: none;
-        font-size: 12px;
-      }
-      .nav-item.active {
-        color: var(--primary);
-      }
-      .nav-icon {
-        font-size: 20px;
-        display: block;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="header">ForoFoos</div>
-
-    <div class="feed">
-      <% if (posts && posts.length) { %> <% posts.forEach(post => { %>
-      <div class="post-card">
-        <div class="post-user">@<%= post.username || 'Anónimo' %></div>
-        <div class="post-content"><%= post.contenido %></div>
-      </div>
-      <% }) %> <% } else { %>
-      <div class="post-card">
-        <div class="post-user">@<%= user %></div>
-        <div class="post-content">
-          ¡Bienvenido a tu nueva aplicación! Aquí aparecerán las publicaciones.
-        </div>
-      </div>
-      <% } %>
-
-      <form action="/publicar" method="POST" class="post-card">
-        <textarea
-          name="contenido"
-          placeholder="¿Qué estás pensando?"
-          style="width: 100%; border: none; outline: none; resize: none; font-size: 16px"
-        ></textarea>
-        <button
-          type="submit"
-          style="
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 20px;
-            float: right;
-            margin-top: 10px;
-          "
-        >
-          Publicar
-        </button>
-        <div style="clear: both"></div>
-      </form>
-    </div>
-
-    <nav class="nav-bar">
-      <a href="/" class="nav-item active"><span class="nav-icon">🏠</span>Inicio</a>
-      <a href="#" class="nav-item"><span class="nav-icon">🔍</span>Buscar</a>
-      <a href="#" class="nav-item"><span class="nav-icon">🔔</span>Notis</a>
-      <a href="/logout" class="nav-item"><span class="nav-icon">👤</span>Salir</a>
+  <div class="container">
+    <nav>
+      <ul>
+        <li><strong>ForoFoos</strong></li>
+      </ul>
+      <ul>
+        <li><a href="/dashboard" class="secondary" aria-current="page">Dashboard</a></li>
+        <li><a href="/proyectos">Proyectos</a></li>
+        <li><a href="/configuracion">Configuración</a></li>
+        <li><a href="/logout">Cerrar Sesión (<%= user.name %>)</a></li>
+      </ul>
     </nav>
-  </body>
+
+    <main>
+      <hgroup>
+        <h1>Dashboard</h1>
+        <h2>Bienvenido, <%= user.name %></h2>
+      </hgroup>
+
+      <div class="grid">
+        <article>
+          <header>Resumen General</header>
+          <h3>Total de Proyectos</h3>
+          <p style="font-size: 3rem; font-weight: bold; margin-bottom: 1rem;"><%= totalProjects %></p>
+          
+          <% if (lastProject) { %>
+            <h3>Última Actualización</h3>
+            <p>
+              <strong><%= lastProject.nombre %></strong><br>
+              <small><%= new Date(lastProject.updated_at).toLocaleDateString('es-ES') %></small>
+            </p>
+          <% } %>
+          <footer>
+            <a href="/proyectos" role="button" class="outline">Gestionar Proyectos</a>
+          </footer>
+        </article>
+
+        <article>
+          <header>Estadísticas de Estado</header>
+          <div style="max-width: 400px; margin: 0 auto;">
+            <canvas id="projectsChart"></canvas>
+          </div>
+        </article>
+      </div>
+
+    </main>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const ctx = document.getElementById('projectsChart').getContext('2d');
+      const chartData = <%- JSON.stringify(chartData) %>; // Inyectar datos desde el servidor
+
+      if (chartData.labels.length > 0) {
+        new Chart(ctx, {
+          type: 'doughnut', // o 'pie', 'bar'
+          data: {
+            labels: chartData.labels,
+            datasets: [{
+              label: 'Proyectos por Estado',
+              data: chartData.data,
+              backgroundColor: [
+                'rgba(255, 159, 64, 0.7)', // En progreso
+                'rgba(75, 192, 192, 0.7)',  // Completado
+                'rgba(255, 205, 86, 0.7)',  // En espera
+                'rgba(255, 99, 132, 0.7)',   // Cancelado
+                'rgba(54, 162, 235, 0.7)'    // Otro estado
+              ],
+              borderWidth: 1
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: { position: 'top' }
+            }
+          }
+        });
+      } else {
+        const container = document.querySelector('.chart-container');
+        container.innerHTML = '<article><p>No tienes proyectos para mostrar estadísticas. ¡Crea uno en la sección de Proyectos!</p></article>';
+      }
+    });
+  </script>
+
+</body>
 </html>

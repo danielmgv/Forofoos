@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Editar Proyecto - ForoFoos</title>
+  <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css">
+</head>
+<body>
+  <div class="container">
+    <nav>
+      <ul>
+        <li><strong>ForoFoos</strong></li>
+      </ul>
+      <ul>
+        <li><a href="/dashboard">Dashboard</a></li>
+        <li><a href="/proyectos">Proyectos</a></li>
+        <li><a href="/configuracion">Configuración</a></li>
+        <li><a href="/logout">Cerrar Sesión</a></li>
+      </ul>
+    </nav>
+
+    <main>
+      <hgroup>
+        <h1>Editar Proyecto</h1>
+        <h2><%= proyecto.nombre %></h2>
+      </hgroup>
+
+      <% if (locals.error) { %>
+        <article style="background-color: #ffe6e6; border-color: #ffcccc; color: #cc0000; padding: 1rem;">
+          <%= error %>
+        </article>
+      <% } %>
+
+      <article>
+        <form action="/proyectos/editar/<%= proyecto.id %>" method="POST">
+          <label>Nombre del Proyecto <input type="text" name="nombre" value="<%= proyecto.nombre %>" required></label>
+          <label>Descripción <textarea name="descripcion"><%= proyecto.descripcion %></textarea></label>
+          <div class="grid">
+            <label>Fecha de Inicio <input type="date" name="fecha_inicio" value="<%= proyecto.fecha_inicio ? new Date(proyecto.fecha_inicio).toISOString().split('T')[0] : '' %>"></label>
+            <label>Estado
+              <select name="estado">
+                <option value="En progreso" <%= proyecto.estado === 'En progreso' ? 'selected' : '' %>>En progreso</option>
+                <option value="En espera" <%= proyecto.estado === 'En espera' ? 'selected' : '' %>>En espera</option>
+                <option value="Completado" <%= proyecto.estado === 'Completado' ? 'selected' : '' %>>Completado</option>
+                <option value="Cancelado" <%= proyecto.estado === 'Cancelado' ? 'selected' : '' %>>Cancelado</option>
+              </select>
+            </label>
+          </div>
+          <div class="grid">
+            <button type="submit">Guardar Cambios</button>
+            <a href="/proyectos" role="button" class="secondary outline">Cancelar</a>
+          </div>
+        </form>
+        <hr>
+        <form action="/proyectos/eliminar/<%= proyecto.id %>" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar este proyecto? No se puede deshacer.');">
+            <button type="submit" class="contrast outline">Eliminar Proyecto</button>
+        </form>
+      </article>
+    </main>
+  </div>
+</body>
+</html>

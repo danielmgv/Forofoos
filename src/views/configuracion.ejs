@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Configuración - ForoFoos</title>
+  <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css">
+</head>
+<body>
+  <div class="container">
+    <nav>
+      <ul>
+        <li><strong>ForoFoos</strong></li>
+      </ul>
+      <ul>
+        <li><a href="/dashboard">Dashboard</a></li>
+        <li><a href="/proyectos">Proyectos</a></li>
+        <li><a href="/configuracion" class="secondary" aria-current="page">Configuración</a></li>
+        <li><a href="/logout">Cerrar Sesión (<%= user.name %>)</a></li>
+      </ul>
+    </nav>
+
+    <main>
+      <hgroup>
+        <h1>Configuración</h1>
+        <h2>Gestiona tu cuenta y seguridad</h2>
+      </hgroup>
+
+      <% if (locals.error) { %>
+        <article style="background-color: #ffe6e6; border-color: #ffcccc; color: #cc0000; padding: 1rem;">
+          <%= error %>
+        </article>
+      <% } %>
+      <% if (locals.success) { %>
+        <article style="background-color: #e6ffe6; border-color: #ccffcc; color: #006600; padding: 1rem;">
+          <%= success %>
+        </article>
+      <% } %>
+
+      <article>
+        <header>Cambiar Contraseña</header>
+        <form action="/auth/change-password" method="POST">
+          <label>Contraseña Actual <input type="password" name="currentPassword" required></label>
+          <label>Nueva Contraseña <input type="password" name="newPassword" required minlength="8"></label>
+          <label>Confirmar Nueva Contraseña <input type="password" name="confirmPassword" required minlength="8"></label>
+          <button type="submit">Actualizar Contraseña</button>
+        </form>
+      </article>
+    </main>
+  </div>
+</body>
+</html>

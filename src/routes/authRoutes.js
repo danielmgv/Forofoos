@@ -17,17 +17,13 @@ router.get('/logout', authController.logout);
 router.get('/register', authController.showRegister);
 router.post('/auth/register', authController.register);
 
-// Esta ruta vive fuera del prefijo /auth normalmente, pero aquí la protegemos
-router.get('/dashboard', isAuth, async (req, res) => {
-  try {
-    const [posts] = await require('../config/db').execute(
-      'SELECT p.*, u.username FROM publicaciones p LEFT JOIN users u ON u.id = p.usuario_id ORDER BY p.fecha_publicacion DESC LIMIT 20'
-    );
-    res.render('dashboard', { user: req.session.username, posts });
-  } catch (err) {
-    console.error(err);
-    res.render('dashboard', { user: req.session.username, posts: [] });
-  }
-});
+// Verificación de email
+router.get('/auth/verify', authController.verify);
+
+// Reenviar token si el usuario no ha verificado
+router.post('/auth/resend-verification', authController.resendVerification);
+
+// Cambiar contraseña (protegido)
+router.post('/auth/change-password', isAuth, authController.changePassword);
 
 module.exports = router;

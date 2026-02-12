@@ -86,4 +86,72 @@ describe('Registro de usuarios', () => {
     expect(res.statusCode).toBe(302);
     expect(res.headers.location).toBe('/login');
   });
+
+  test('POST /auth/register cuando ocurre error en DB -> muestra página de error', async () => {
+    // Simulamos que la base de datos lanza un error (p. ej. caída)
+    db.execute.mockRejectedValueOnce(new Error('DB down'));
+
+    const res = await request(app)
+      .post('/auth/register')
+      .type('form')
+      .send({ username: 'u', email: 'u@ex.com', password: 'password123' });
+
+    expect(res.statusCode).toBe(200);
+    expect(res.text).toMatch(/No se pudo crear la cuenta en este momento/);
+  });
+
+  test('POST /auth/register si el controlador lanza -> muestra mensaje en la misma página', async () => {
+    // Mockeamos el método del controlador para que lance
+    const authController = require('../src/controllers/authController');
+    const original = authController.register;
+    authController.register = jest.fn(() => {
+      throw new Error('boom');
+    });
+
+    const res = await request(app)
+      .post('/auth/register')
+      .type('form')
+      .send({ username: 'u', email: 'u@ex.com', password: 'password123' });
+
+    // Restaurar
+    authController.register = original;
+
+    expect(res.statusCode).toBe(200);
+    expect(res.text).toMatch(/No se pudo crear la cuenta en este momento/);
+  });
+
+  test('POST /auth/register cuando un middleware interno llama next(err) -> muestra mensaje en la misma página', async () => {
+    // Mockeamos register para simular que internamente llama next(err)
+    const authController = require('../src/controllers/authController');
+    const original = authController.register;
+    authController.register = jest.fn((req, res, next) => next(new Error('boom')));
+
+    const res = await request(app)
+      .post('/auth/register')
+      .type('form')
+      .send({ username: 'u', email: 'u@ex.com', password: 'password123' });
+
+    // Restaurar
+    authController.register = original;
+
+    expect(res.statusCode).toBe(200);
+    expect(res.text).toMatch(/No se pudo crear la cuenta en este momento/);
+  });
+
+  test('POST /auth/register si el controlador hace res.status(500).send("Error en el servidor") -> lo interceptamos y mostramos register', async () => {
+    const authController = require('../src/controllers/authController');
+    const original = authController.register;
+    authController.register = jest.fn((req, res) => res.status(500).send('Error en el servidor'));
+
+    const res = await request(app)
+      .post('/auth/register')
+      .type('form')
+      .send({ username: 'u', email: 'u@ex.com', password: 'password123' });
+
+    // Restaurar
+    authController.register = original;
+
+    expect(res.statusCode).toBe(200);
+    expect(res.text).toMatch(/No se pudo crear la cuenta en este momento/);
+  });
 });

@@ -4,6 +4,7 @@ const session = require('express-session');
 const path = require('path');
 const app = express();
 const authRoutes = require('./src/routes/authRoutes');
+const logger = require('./src/utils/logger');
 
 // Motor de vistas
 app.set('view engine', 'ejs');
@@ -25,15 +26,38 @@ app.use(
   })
 );
 
+// Security middleware: interceptar respuestas planas con "Error en el servidor" en la ruta de registro
+// y reemplazarlas por la vista `register` con el mensaje estético.
+app.use((req, res, next) => {
+  const origSend = res.send;
+  res.send = function (body) {
+    try {
+      if (
+        (req.path === '/auth/register' || req.path === '/register') &&
+        typeof body === 'string' &&
+        body.trim() === 'Error en el servidor'
+      ) {
+        return res.status(200).render('register', {
+          error: 'No se pudo crear la cuenta en este momento. Por favor inténtalo más tarde.',
+        });
+      }
+    } catch (e) {
+      logger.error('Error al interceptar response body', e);
+    }
+    return origSend.call(this, body);
+  };
+  next();
+});
+
 // Rutas
-console.log('[DEBUG] Registrando authRoutes...');
 app.use('/', authRoutes);
-console.log('[DEBUG] authRoutes registradas');
-console.log('[DEBUG] app._router after authRoutes:', !!app._router, typeof app._router);
-console.log('[DEBUG] Registrando publicaciones route...');
+app.use('/', require('./src/routes/dashboard'));
 app.use('/', require('./src/routes/publicaciones'));
-console.log('[DEBUG] publicaciones registradas');
-console.log('[DEBUG] app._router after publicaciones:', !!app._router, typeof app._router);
+app.use('/', require('./src/routes/proyectos'));
+app.use('/', require('./src/routes/views'));
+
+// Middleware global de errores (último middleware)
+app.use(require('./src/middlewares/errorHandler'));
 
 // Loguear rutas en startup (temporal)
 // Función pública para listar rutas. Se debe llamar después de arrancar el servidor (ej. desde server.js)
@@ -74,9 +98,18 @@ app.logRegisteredRoutes = () => {
       console.warn('[WARN] No hay router disponible, no se listan rutas');
     }
   } catch (err) {
-    console.error('[WARN] No se pudieron listar las rutas', err);
+    logger.warn('No se pudieron listar las rutas', err);
   }
 };
 
 // Exportar app para tests y server
 module.exports = app;
+
+// Iniciar servidor si este archivo se ejecuta directamente
+if (require.main === module) {
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => {
+    console.log(`\n🚀 Servidor escuchando en http://localhost:${PORT}`);
+    app.logRegisteredRoutes();
+  });
+}

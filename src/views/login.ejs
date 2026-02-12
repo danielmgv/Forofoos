@@ -33,6 +33,16 @@
   <p class="footer-note">
     ¿No tienes cuenta? <a href="/register" class="link-primary">Regístrate</a>
   </p>
+
+  <% if (typeof showResend !== 'undefined' && showResend) { %>
+  <div class="resend-section" id="resendSection" >
+      <h4>¿No recibiste el email de verificación?</h4>
+    <form action="/auth/resend-verification" method="POST">
+      <input class="input" type="email" name="email" value="<%= typeof email !== 'undefined' ? email : '' %>" placeholder="Tu correo" required />
+      <button class="btn-secondary" type="submit">Reenviar correo</button>
+    </form>
+  </div>
+  <% } %>
 </div>
 
 <script>

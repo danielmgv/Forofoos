@@ -1,0 +1,81 @@
+[2026-02-03T15:14:20.498Z] [ERROR] DB connection failed at startup Error
+    at PromisePool.execute (F:\ForoFoos\node_modules\mysql2\lib\promise\pool.js:54:22)
+    at Object.execute (F:\ForoFoos\src\config\db.js:24:35)
+    at checkDB (F:\ForoFoos\server.js:19:14)
+    at start (F:\ForoFoos\server.js:58:11)
+    at Object.<anonymous> (F:\ForoFoos\server.js:78:3)
+    at Module._compile (node:internal/modules/cjs/loader:1761:14)
+    at Object..js (node:internal/modules/cjs/loader:1893:10)
+    at Module.load (node:internal/modules/cjs/loader:1481:32)
+    at Module._load (node:internal/modules/cjs/loader:1300:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:328:14)
+[2026-02-03T15:14:20.499Z] [DEBUG] Skipping strict SMTP verification (not in production)
+[2026-02-03T15:14:20.517Z] [INFO] 🚀 Servidor corriendo en: http://0.0.0.0:3000
+[2026-02-03T15:18:44.483Z] [ERROR] DB connection failed at startup Error
+    at PromisePool.execute (F:\ForoFoos\node_modules\mysql2\lib\promise\pool.js:54:22)
+    at Object.execute (F:\ForoFoos\src\config\db.js:24:35)
+    at checkDB (F:\ForoFoos\server.js:19:14)
+    at start (F:\ForoFoos\server.js:58:11)
+    at Object.<anonymous> (F:\ForoFoos\server.js:78:3)
+    at Module._compile (node:internal/modules/cjs/loader:1761:14)
+    at Object..js (node:internal/modules/cjs/loader:1893:10)
+    at Module.load (node:internal/modules/cjs/loader:1481:32)
+    at Module._load (node:internal/modules/cjs/loader:1300:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:328:14)
+[2026-02-03T15:18:44.484Z] [DEBUG] Skipping strict SMTP verification (not in production)
+[2026-02-03T15:18:44.490Z] [INFO] 🚀 Servidor corriendo en: http://0.0.0.0:3000
+[2026-02-03T15:24:40.096Z] [ERROR] DB connection failed at startup Error
+    at PromisePool.execute (F:\ForoFoos\node_modules\mysql2\lib\promise\pool.js:54:22)
+    at Object.execute (F:\ForoFoos\src\config\db.js:24:35)
+    at checkDB (F:\ForoFoos\server.js:19:14)
+    at start (F:\ForoFoos\server.js:58:11)
+    at Object.<anonymous> (F:\ForoFoos\server.js:78:3)
+    at Module._compile (node:internal/modules/cjs/loader:1761:14)
+    at Object..js (node:internal/modules/cjs/loader:1893:10)
+    at Module.load (node:internal/modules/cjs/loader:1481:32)
+    at Module._load (node:internal/modules/cjs/loader:1300:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:328:14)
+[2026-02-03T15:24:40.097Z] [DEBUG] Skipping strict SMTP verification (not in production)
+[2026-02-03T15:24:40.102Z] [INFO] 🚀 Servidor corriendo en: http://0.0.0.0:3000
+[2026-02-03T15:27:59.771Z] [ERROR] sendVerificationEmail error (TLS) Error: self-signed certificate in certificate chain
+    at TLSSocket.onConnectSecure (node:_tls_wrap:1649:34)
+    at TLSSocket.emit (node:events:508:28)
+    at TLSSocket._finishInit (node:_tls_wrap:1094:8)
+    at ssl.onhandshakedone (node:_tls_wrap:880:12)
+[2026-02-03T15:27:59.771Z] [WARN] TLS error detected when connecting to SMTP. Possible causes: self-signed certificate or rejected TLS handshake.
+[2026-02-03T15:27:59.772Z] [WARN] Quick fixes (development only):
+[2026-02-03T15:27:59.772Z] [WARN] - Set `SMTP_ALLOW_INSECURE=true` in your `.env` to allow insecure TLS (NOT recommended for production).
+[2026-02-03T15:27:59.773Z] [WARN] - Or add your CA to Node's trust store and restart the app: set environment variable `NODE_EXTRA_CA_CERTS='C:\path\to\ca.pem'` (Windows PowerShell) or `NODE_EXTRA_CA_CERTS=/path/to/ca.pem` (Linux/macOS).
+[2026-02-03T15:27:59.778Z] [WARN] No se pudo enviar el email de verificación {"to":"danielmgv@gmail.com","link":"http://localhost:3000/auth/verify?token=6d6d53cf7e32db33e2ae5ad482e55e2c7b0e357c5a5106ed4eaca5dedf684709","err":"self-signed certificate in certificate chain"}
+[2026-02-03T15:27:59.773Z] [WARN] - For production, use a SMTP provider with a valid CA-signed certificate (SendGrid, SES, etc.).
+[2026-02-03T15:44:20.408Z] [INFO] DB connection OK
+[2026-02-03T15:44:20.408Z] [DEBUG] Skipping strict SMTP verification (not in production)
+[2026-02-03T15:44:20.414Z] [INFO] 🚀 Servidor corriendo en: http://0.0.0.0:3000
+[2026-02-03T15:45:15.150Z] [INFO] Email preview URL: https://ethereal.email/message/aYIYCmwccpL9Zo7YaYIYC5SkaEEGSliGAAAAAYF9CGrFmcE8JFF2FgS7WOk
+[2026-02-03T15:45:15.151Z] [INFO] Verification email sent to danielmgv@gmail.com
+[2026-02-03T15:53:22.266Z] [INFO] DB connection OK
+[2026-02-03T15:53:22.271Z] [INFO] 🚀 Servidor corriendo en: http://0.0.0.0:3000
+[2026-02-03T15:53:22.267Z] [DEBUG] Skipping strict SMTP verification (not in production)
+[2026-02-03T15:53:56.352Z] [INFO] Email preview URL: https://ethereal.email/message/aYIaE2wccpL9ZrzkaYIaFLG7FRPhcmn8AAAAAVvKpZMDy09JNOaUOMtRFHM
+[2026-02-03T15:53:56.353Z] [INFO] Verification email sent to danielmgv@gmail.com
+[2026-02-03T16:02:00.733Z] [INFO] DB connection OK
+[2026-02-03T16:02:00.734Z] [DEBUG] Skipping strict SMTP verification (not in production)
+[2026-02-03T16:02:00.738Z] [INFO] 🚀 Servidor corriendo en: http://0.0.0.0:3000
+[2026-02-03T16:02:25.788Z] [ERROR] sendVerificationEmail error Error: Invalid login: 535-5.7.8 Username and Password not accepted. For more information, go to
+535 5.7.8  https://support.google.com/mail/?p=BadCredentials 5b1f17b1804b1-483051287cfsm115989905e9.6 - gsmtp
+    at SMTPConnection._formatError (F:\ForoFoos\node_modules\nodemailer\lib\smtp-connection\index.js:809:19)
+    at SMTPConnection._actionAUTHComplete (F:\ForoFoos\node_modules\nodemailer\lib\smtp-connection\index.js:1588:34)
+    at SMTPConnection.<anonymous> (F:\ForoFoos\node_modules\nodemailer\lib\smtp-connection\index.js:556:26)
+    at SMTPConnection._processResponse (F:\ForoFoos\node_modules\nodemailer\lib\smtp-connection\index.js:993:20)
+    at SMTPConnection._onData (F:\ForoFoos\node_modules\nodemailer\lib\smtp-connection\index.js:774:14)
+    at SMTPConnection._onSocketData (F:\ForoFoos\node_modules\nodemailer\lib\smtp-connection\index.js:195:44)
+    at TLSSocket.emit (node:events:508:28)
+    at addChunk (node:internal/streams/readable:559:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:510:3)
+    at Readable.push (node:internal/streams/readable:390:5)
+[2026-02-03T16:02:25.789Z] [WARN] No se pudo enviar el email de verificación {"to":"danielmgv@gmail.com","link":"http://localhost:3000/auth/verify?token=a324aa1b4d7dd04949f9636452ce09ad43433c491401c022fe0be9e4f50a77fc","err":"Invalid login: 535-5.7.8 Username and Password not accepted. For more information, go to\n535 5.7.8  https://support.google.com/mail/?p=BadCredentials 5b1f17b1804b1-483051287cfsm115989905e9.6 - gsmtp"}
+[2026-02-03T16:04:12.683Z] [INFO] DB connection OK
+[2026-02-03T16:04:12.684Z] [DEBUG] Skipping strict SMTP verification (not in production)
+[2026-02-03T16:04:12.688Z] [INFO] 🚀 Servidor corriendo en: http://0.0.0.0:3000
+[2026-02-03T16:04:43.451Z] [INFO] Email preview URL: false
+[2026-02-03T16:04:43.452Z] [INFO] Verification email sent to danielmgv@gmail.com

@@ -11,7 +11,9 @@
     "lint": "eslint -c .eslintrc.json . --ext .js",
     "lint:fix": "eslint -c .eslintrc.json . --ext .js --fix",
     "format": "prettier --write \"**/*.{js,ejs,json,md}\"",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "db:init": "node scripts/init-db.js",
+    "db:migrate": "node scripts/migrate-add-verification.js"
   },
   "keywords": [],
   "author": "",
@@ -26,7 +28,8 @@
     "ejs": "^4.0.1",
     "express": "^5.2.1",
     "express-session": "^1.19.0",
-    "mysql2": "^3.16.2"
+    "mysql2": "^3.16.2",
+    "nodemailer": "^6.9.4"
   },
   "devDependencies": {
     "@playwright/test": "^1.58.1",

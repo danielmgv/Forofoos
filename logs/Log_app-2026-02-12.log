@@ -1,0 +1,6 @@
+[2026-02-12T21:22:04.677Z] [INFO] DB connection OK
+[2026-02-12T21:22:04.678Z] [DEBUG] Skipping strict SMTP verification (not in production)
+[2026-02-12T21:22:04.683Z] [INFO] 🚀 Servidor corriendo en: http://0.0.0.0:3000
+[2026-02-12T21:31:40.097Z] [INFO] DB connection OK
+[2026-02-12T21:31:40.098Z] [DEBUG] Skipping strict SMTP verification (not in production)
+[2026-02-12T21:31:40.103Z] [INFO] 🚀 Servidor corriendo en: http://0.0.0.0:3000

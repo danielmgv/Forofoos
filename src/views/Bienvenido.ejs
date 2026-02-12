@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Impact Hub - Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        :root {
+            --primary-bg: #f4f7f6;
+            --sidebar-color: #ffffff;
+            --accent-color: #26a69a; /* Verde agua del diseño */
+            --header-color: #1a7b8c; /* Azul petróleo */
+        }
+        body { background-color: var(--primary-bg); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .sidebar { background-color: var(--sidebar-color); min-height: 100vh; border-right: 1px solid #ddd; }
+        .nav-link { color: #555; padding: 12px 20px; display: flex; align-items: center; }
+        .nav-link.active { background-color: #e0f2f1; color: var(--accent-color); border-radius: 0 25px 25px 0; font-weight: bold; }
+        .nav-link i { margin-right: 10px; }
+        .header-banner { background-color: var(--header-color); color: white; padding: 40px 30px; border-radius: 0 0 20px 20px; margin-bottom: 30px; }
+        .card { border: none; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        .progress-circle { width: 80px; height: 80px; border-radius: 50%; border: 8px solid #eee; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; position: relative; }
+        .btn-new-project { background-color: var(--header-color); color: white; border-radius: 30px; padding: 12px 30px; font-weight: bold; position: fixed; bottom: 30px; right: 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+    </style>
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 d-none d-md-block sidebar p-0">
+            <div class="p-4 mb-4">
+                <h4 class="text-center"><b>SocialHub</b></h4>
+            </div>
+            <ul class="nav flex-column">
+                <li class="nav-item"><a class="nav-link" href="#"><i class="material-icons">home</i> Home</a></li>
+                <li class="nav-item"><a class="nav-link active" href="#"><i class="material-icons">assignment</i> Projects</a></li>
+                <li class="nav-item"><a class="nav-link" href="#"><i class="material-icons">people</i> Community</a></li>
+                <li class="nav-item"><a class="nav-link" href="#"><i class="material-icons">chat</i> Messages</a></li>
+                <li class="nav-item"><a class="nav-link" href="#"><i class="material-icons">person</i> Profile</a></li>
+            </ul>
+        </nav>
+
+        <main class="col-md-10 ms-sm-auto px-md-4">
+            <div class="header-banner d-flex justify-content-between align-items-center">
+                <div>
+                    <h1>Welcome, Alex!</h1>
+                    <p class="mb-0">Your Social Impact Hub</p>
+                </div>
+                <div class="d-flex gap-3">
+                    <i class="material-icons">search</i>
+                    <i class="material-icons">notifications</i>
+                    <i class="material-icons">account_circle</i>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="card p-4">
+                        <div class="d-flex justify-content-between mb-4">
+                            <h5 class="fw-bold">Active Projects</h5>
+                            <i class="material-icons text-muted">more_horiz</i>
+                        </div>
+                        <div class="row text-center">
+                            <div class="col-md-4">
+                                <div class="progress-circle" style="border-top-color: var(--accent-color);">75%</div>
+                                <small class="d-block fw-bold">Eco-Park Initiative</small>
+                                <small class="text-muted">In progress</small>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="progress-circle" style="border-top-color: #ffb74d;">60%</div>
+                                <small class="d-block fw-bold">Youth Mentorship</small>
+                                <small class="text-muted">In progress</small>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="progress-circle" style="border-top-color: #4db6ac;">50%</div>
+                                <small class="d-block fw-bold">Community Garden</small>
+                                <small class="text-muted">In progress</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card p-4">
+                        <h5 class="fw-bold mb-4">Recent Activity</h5>
+                        <div class="list-group list-group-flush">
+                            <div class="list-group-item d-flex align-items-center border-0 px-0">
+                                <div class="bg-light rounded-circle p-2 me-3 text-primary">S</div>
+                                <div>
+                                    <p class="mb-0"><b>Sofia H.</b> joined your project <b>Eco-Pak</b></p>
+                                    <small class="text-muted">2 hours ago</small>
+                                </div>
+                            </div>
+                            <div class="list-group-item d-flex align-items-center border-0 px-0">
+                                <div class="bg-light rounded-circle p-2 me-3 text-success">M</div>
+                                <div>
+                                    <p class="mb-0"><b>Mark T.</b> added photos to <b>Garden Build</b></p>
+                                    <small class="text-muted">5 hours ago</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="card p-4">
+                        <h5 class="fw-bold mb-3">Tasks & Milestones</h5>
+                        <div class="small">
+                            <div class="d-flex mb-3">
+                                <i class="material-icons me-2 text-warning" style="font-size: 18px;">radio_button_unchecked</i>
+                                <span>Finalize budget for Eco-Park (Due Feb 5)</span>
+                            </div>
+                            <div class="d-flex">
+                                <i class="material-icons me-2 text-warning" style="font-size: 18px;">radio_button_unchecked</i>
+                                <span>Contact volunteers for Garden Build (Due Feb 12)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card p-4">
+                        <h5 class="fw-bold mb-3">Trending in Community</h5>
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="bg-secondary rounded p-1 me-2"></div>
+                            <span class="small">#CleanWaterInitiative</span>
+                        </div>
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="bg-secondary rounded p-1 me-2"></div>
+                            <span class="small">#LocalEducation2026</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<button class="btn btn-new-project d-flex align-items-center">
+    <i class="material-icons me-2">add_circle</i> Start New Project
+</button>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
