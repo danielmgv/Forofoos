@@ -1,51 +1,69 @@
 <!DOCTYPE html>
-<html lang="es" data-theme="light">
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Configuración - ForoFoos</title>
-  <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body>
-  <div class="container">
-    <nav>
-      <ul>
-        <li><strong>ForoFoos</strong></li>
-      </ul>
-      <ul>
-        <li><a href="/dashboard">Dashboard</a></li>
-        <li><a href="/proyectos">Proyectos</a></li>
-        <li><a href="/configuracion" class="secondary" aria-current="page">Configuración</a></li>
-        <li><a href="/logout">Cerrar Sesión (<%= user.name %>)</a></li>
-      </ul>
-    </nav>
+<body class="bg-[#121826] text-gray-200 font-sans">
 
-    <main>
-      <hgroup>
-        <h1>Configuración</h1>
-        <h2>Gestiona tu cuenta y seguridad</h2>
-      </hgroup>
+  <div class="flex h-screen overflow-hidden">
+    
+    <!-- Sidebar -->
+    <aside class="w-64 bg-[#1e2532] p-6 hidden md:flex flex-col">
+        <div class="flex items-center gap-3 mb-10">
+            <img src="/user-avatar.jpg" class="w-10 h-10 rounded-full border-2 border-indigo-500" alt="Profile">
+            <div>
+                <p class="text-sm font-bold"><%= user.name %></p>
+                <p class="text-xs text-gray-400">Admin</p>
+            </div>
+        </div>
+        <%- include('partials/navbar') %>
+        <div class="mt-auto">
+            <a href="/logout" class="text-gray-400 hover:text-red-400 text-sm"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col h-screen overflow-hidden bg-[#121826]">
+      <div class="flex-1 overflow-y-auto p-6">
+        <h1 class="text-2xl font-bold mb-2">Configuración</h1>
+        <h2 class="text-gray-400 text-sm mb-8">Gestiona tu cuenta y seguridad</h2>
 
       <% if (locals.error) { %>
-        <article style="background-color: #ffe6e6; border-color: #ffcccc; color: #cc0000; padding: 1rem;">
+        <div class="bg-red-900/30 border border-red-500/50 text-red-200 p-4 rounded-lg mb-6 max-w-2xl">
           <%= error %>
-        </article>
+        </div>
       <% } %>
       <% if (locals.success) { %>
-        <article style="background-color: #e6ffe6; border-color: #ccffcc; color: #006600; padding: 1rem;">
+        <div class="bg-green-900/30 border border-green-500/50 text-green-200 p-4 rounded-lg mb-6 max-w-2xl">
           <%= success %>
-        </article>
+        </div>
       <% } %>
 
-      <article>
-        <header>Cambiar Contraseña</header>
-        <form action="/auth/change-password" method="POST">
-          <label>Contraseña Actual <input type="password" name="currentPassword" required></label>
-          <label>Nueva Contraseña <input type="password" name="newPassword" required minlength="8"></label>
-          <label>Confirmar Nueva Contraseña <input type="password" name="confirmPassword" required minlength="8"></label>
-          <button type="submit">Actualizar Contraseña</button>
+      <div class="bg-[#1e2532] p-6 rounded-xl border border-gray-700 max-w-2xl">
+        <h3 class="text-lg font-bold mb-6 border-b border-gray-700 pb-2">Cambiar Contraseña</h3>
+        <form action="/auth/change-password" method="POST" class="space-y-5">
+          <div>
+            <label class="block text-sm text-gray-400 mb-1">Contraseña Actual</label>
+            <input type="password" name="currentPassword" required class="w-full bg-[#121826] border border-gray-700 rounded-lg py-2.5 px-4 text-white focus:outline-none focus:border-indigo-500 transition">
+          </div>
+          <div>
+            <label class="block text-sm text-gray-400 mb-1">Nueva Contraseña</label>
+            <input type="password" name="newPassword" required minlength="8" class="w-full bg-[#121826] border border-gray-700 rounded-lg py-2.5 px-4 text-white focus:outline-none focus:border-indigo-500 transition">
+          </div>
+          <div>
+            <label class="block text-sm text-gray-400 mb-1">Confirmar Nueva Contraseña</label>
+            <input type="password" name="confirmPassword" required minlength="8" class="w-full bg-[#121826] border border-gray-700 rounded-lg py-2.5 px-4 text-white focus:outline-none focus:border-indigo-500 transition">
+          </div>
+          <div class="pt-2">
+            <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 text-white py-2.5 px-6 rounded-lg transition shadow-lg shadow-indigo-500/30 font-medium">Actualizar Contraseña</button>
+          </div>
         </form>
-      </article>
+      </div>
+      </div>
     </main>
   </div>
 </body>

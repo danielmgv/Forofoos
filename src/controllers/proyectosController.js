@@ -133,13 +133,14 @@ exports.editarProyecto = async (req, res) => {
 // COMPLETAR: Marcar proyecto como completado
 exports.completarProyecto = async (req, res) => {
   const { id } = req.params;
+  const redirectUrl = req.query.redirect || '/proyectos';
   try {
     // Actualizamos directamente verificando usuario_id para seguridad
     await db.execute('UPDATE proyectos SET estado = ? WHERE id = ? AND usuario_id = ?', ['Completado', id, req.session.userId]);
-    res.redirect('/proyectos?success=Proyecto marcado como completado');
+    res.redirect(`${redirectUrl}?success=Proyecto marcado como completado`);
   } catch (err) {
     logger.error(err);
-    res.redirect('/proyectos?error=Error al actualizar el estado del proyecto');
+    res.redirect(`${redirectUrl}?error=Error al actualizar el estado del proyecto`);
   }
 };
 

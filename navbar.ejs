@@ -1,0 +1,20 @@
+<nav class="navbar">
+  <!-- Puedes adaptar las clases CSS según tu framework (ej. Bootstrap) -->
+  <ul>
+    <li><a href="/home">Inicio</a></li>
+    <li><a href="/proyectos">Proyectos</a></li>
+    <!-- Si tienes una ruta específica para mensajes, asegúrate de incluirla aquí -->
+    <li><a href="/mensajes">Mensajes</a></li>
+
+    <% if (typeof user !== 'undefined' && user) { %>
+      <!-- Opciones para usuarios logueados -->
+      <li><span>Hola, <%= user.name %></span></li>
+      <li><a href="/configuracion">Configuración</a></li>
+      <li><a href="/logout">Cerrar Sesión</a></li>
+    <% } else { %>
+      <!-- Opciones para visitantes -->
+      <li><a href="/login">Iniciar Sesión</a></li>
+      <li><a href="/register">Registrarse</a></li>
+    <% } %>
+  </ul>
+</nav>

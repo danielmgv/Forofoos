@@ -1,0 +1,19 @@
+[2026-02-15T19:10:19.779Z] [ERROR] DB connection failed at startup Error
+    at PromisePool.execute (F:\ForoFoos\node_modules\mysql2\lib\promise\pool.js:54:22)
+    at Object.execute (F:\ForoFoos\src\config\db.js:24:35)
+    at checkDB (F:\ForoFoos\server.js:19:14)
+    at start (F:\ForoFoos\server.js:58:11)
+    at Object.<anonymous> (F:\ForoFoos\server.js:78:3)
+    at Module._compile (node:internal/modules/cjs/loader:1761:14)
+    at Object..js (node:internal/modules/cjs/loader:1893:10)
+    at Module.load (node:internal/modules/cjs/loader:1481:32)
+    at Module._load (node:internal/modules/cjs/loader:1300:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:328:14)
+[2026-02-15T19:10:19.780Z] [DEBUG] Skipping strict SMTP verification (not in production)
+[2026-02-15T19:10:19.787Z] [INFO] 🚀 Servidor corriendo en: http://0.0.0.0:3000
+[2026-02-15T19:28:04.484Z] [INFO] DB connection OK
+[2026-02-15T19:28:04.485Z] [DEBUG] Skipping strict SMTP verification (not in production)
+[2026-02-15T19:28:04.490Z] [INFO] 🚀 Servidor corriendo en: http://0.0.0.0:3000
+[2026-02-15T19:40:56.435Z] [INFO] DB connection OK
+[2026-02-15T19:40:56.436Z] [DEBUG] Skipping strict SMTP verification (not in production)
+[2026-02-15T19:40:56.441Z] [INFO] 🚀 Servidor corriendo en: http://0.0.0.0:3000

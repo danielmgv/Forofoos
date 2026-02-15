@@ -26,6 +26,15 @@ app.use(
   })
 );
 
+// Middleware para hacer disponible la información del usuario en todas las vistas
+app.use((req, res, next) => {
+  res.locals.user = req.session.userId
+    ? { id: req.session.userId, name: req.session.username }
+    : null;
+  res.locals.path = req.path;
+  next();
+});
+
 // Security middleware: interceptar respuestas planas con "Error en el servidor" en la ruta de registro
 // y reemplazarlas por la vista `register` con el mensaje estético.
 app.use((req, res, next) => {
@@ -51,7 +60,7 @@ app.use((req, res, next) => {
 
 // Rutas
 app.use('/', authRoutes);
-app.use('/', require('./src/routes/dashboard'));
+app.use('/', require('./src/routes/home'));
 app.use('/', require('./src/routes/publicaciones'));
 app.use('/', require('./src/routes/proyectos'));
 app.use('/', require('./src/routes/views'));

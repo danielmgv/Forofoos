@@ -1,0 +1,25 @@
+[2026-02-13T14:27:43.481Z] [INFO] DB connection OK
+[2026-02-13T14:27:43.483Z] [DEBUG] Skipping strict SMTP verification (not in production)
+[2026-02-13T14:27:43.514Z] [INFO] 🚀 Servidor corriendo en: http://0.0.0.0:3000
+[2026-02-13T15:39:26.271Z] [ERROR] DB connection failed at startup Error
+    at PromisePool.execute (F:\ForoFoos\node_modules\mysql2\lib\promise\pool.js:54:22)
+    at Object.execute (F:\ForoFoos\src\config\db.js:24:35)
+    at checkDB (F:\ForoFoos\server.js:19:14)
+    at start (F:\ForoFoos\server.js:58:11)
+    at Object.<anonymous> (F:\ForoFoos\server.js:78:3)
+    at Module._compile (node:internal/modules/cjs/loader:1761:14)
+    at Object..js (node:internal/modules/cjs/loader:1893:10)
+    at Module.load (node:internal/modules/cjs/loader:1481:32)
+    at Module._load (node:internal/modules/cjs/loader:1300:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:328:14)
+[2026-02-13T15:39:26.273Z] [DEBUG] Skipping strict SMTP verification (not in production)
+[2026-02-13T15:39:26.300Z] [INFO] 🚀 Servidor corriendo en: http://0.0.0.0:3000
+[2026-02-13T15:57:01.288Z] [INFO] DB connection OK
+[2026-02-13T15:57:01.289Z] [DEBUG] Skipping strict SMTP verification (not in production)
+[2026-02-13T15:57:01.294Z] [INFO] 🚀 Servidor corriendo en: http://0.0.0.0:3000
+[2026-02-13T16:07:35.361Z] [INFO] DB connection OK
+[2026-02-13T16:07:35.362Z] [DEBUG] Skipping strict SMTP verification (not in production)
+[2026-02-13T16:07:35.367Z] [INFO] 🚀 Servidor corriendo en: http://0.0.0.0:3000
+[2026-02-13T16:14:10.721Z] [INFO] DB connection OK
+[2026-02-13T16:14:10.722Z] [DEBUG] Skipping strict SMTP verification (not in production)
+[2026-02-13T16:14:10.726Z] [INFO] 🚀 Servidor corriendo en: http://0.0.0.0:3000

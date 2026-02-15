@@ -1,111 +1,164 @@
 <!DOCTYPE html>
-<html lang="es" data-theme="light">
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Proyectos - ForoFoos</title>
-  <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body>
-  <div class="container">
-    <nav>
-      <ul>
-        <li><strong>ForoFoos</strong></li>
-      </ul>
-      <ul>
-        <li><a href="/dashboard">Dashboard</a></li>
-        <li><a href="/proyectos" class="secondary" aria-current="page">Proyectos</a></li>
-        <li><a href="/configuracion">Configuración</a></li>
-        <li><a href="/logout">Cerrar Sesión (<%= user.name %>)</a></li>
-      </ul>
-    </nav>
+<body class="bg-[#121826] text-gray-200 font-sans">
 
-    <main>
-      <hgroup>
-        <h1>Gestión de Proyectos</h1>
-        <h2>Administra tus proyectos y tareas</h2>
-      </hgroup>
-
-      <!-- Mensajes de Feedback -->
-      <% if (locals.error) { %>
-        <article style="background-color: #ffe6e6; border-color: #ffcccc; color: #cc0000; padding: 1rem;">
-          <%= error %>
-        </article>
-      <% } %>
-      <% if (locals.success) { %>
-        <article style="background-color: #e6ffe6; border-color: #ccffcc; color: #006600; padding: 1rem;">
-          <%= success %>
-        </article>
-      <% } %>
-
-      <!-- Buscador y Filtros -->
-      <div class="grid">
-        <form action="/proyectos" method="GET" role="search">
-          <fieldset role="group">
-            <input type="search" name="search" placeholder="Buscar proyectos..." value="<%= locals.search || '' %>">
-            <input type="submit" value="Buscar">
-          </fieldset>
-        </form>
-        <div style="text-align: right;">
-           <!-- Espacio reservado para acciones futuras -->
-        </div>
-      </div>
-
-      <!-- Formulario de Creación (Colapsable) -->
-      <details>
-        <summary role="button" class="outline">Crear Nuevo Proyecto</summary>
-        <article>
-          <form action="/proyectos/crear" method="POST">
-            <label>Nombre del Proyecto <input type="text" name="nombre" required></label>
-            <label>Descripción <textarea name="descripcion"></textarea></label>
-            <div class="grid">
-              <label>Fecha de Inicio <input type="date" name="fecha_inicio"></label>
-              <label>Estado
-                <select name="estado">
-                  <option value="En progreso">En progreso</option>
-                  <option value="En espera">En espera</option>
-                  <option value="Completado">Completado</option>
-                </select>
-              </label>
+  <div class="flex h-screen overflow-hidden">
+    
+    <!-- Sidebar -->
+    <aside class="w-64 bg-[#1e2532] p-6 hidden md:flex flex-col">
+        <div class="flex items-center gap-3 mb-10">
+            <img src="/user-avatar.jpg" class="w-10 h-10 rounded-full border-2 border-indigo-500" alt="Profile">
+            <div>
+                <p class="text-sm font-bold"><%= user.name %></p>
+                <p class="text-xs text-gray-400">Admin</p>
             </div>
-            <button type="submit">Guardar Proyecto</button>
-          </form>
-        </article>
-      </details>
+        </div>
 
-      <!-- Lista de Proyectos -->
-      <% if (proyectos && proyectos.length > 0) { %>
-        <figure>
-          <table role="grid">
-            <thead>
-              <tr>
-                <th scope="col">Nombre</th>
-                <th scope="col">Estado</th>
-                <th scope="col">Fecha</th>
-                <th scope="col" style="text-align: center;">Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% proyectos.forEach(p => { %>
-                <tr>
-                  <td>
-                    <strong><%= p.nombre %></strong><br>
-                    <small><%= p.descripcion ? p.descripcion.substring(0, 50) + (p.descripcion.length > 50 ? '...' : '') : '' %></small>
-                  </td>
-                  <td><%= p.estado %></td>
-                  <td><%= new Date(p.created_at).toLocaleDateString() %></td>
-                  <td style="text-align: center;">
-                    <a href="/proyectos/editar/<%= p.id %>" role="button" class="outline small">Editar</a>
-                  </td>
-                </tr>
-              <% }) %>
-            </tbody>
-          </table>
-        </figure>
-      <% } else { %>
-        <article><p>No hay proyectos para mostrar.</p></article>
-      <% } %>
+        <%- include('partials/navbar') %>
+
+        <div class="mt-auto">
+            <a href="/logout" class="text-gray-400 hover:text-red-400 text-sm"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col h-screen overflow-hidden bg-[#121826]">
+      <div class="flex-1 overflow-y-auto p-6">
+        
+        <div class="flex justify-between items-center mb-8">
+            <div>
+                <h1 class="text-2xl font-bold">Proyectos</h1>
+                <p class="text-gray-400 text-sm">Gestiona y monitorea tus proyectos</p>
+            </div>
+            <button onclick="toggleModal()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg transition flex items-center gap-2 shadow-lg shadow-indigo-500/30">
+                <i class="fas fa-plus"></i> Nuevo Proyecto
+            </button>
+        </div>
+
+        <% if (locals.error) { %>
+            <div class="bg-red-900/30 border border-red-500/50 text-red-200 p-4 rounded-lg mb-6">
+                <%= error %>
+            </div>
+        <% } %>
+        <% if (locals.success) { %>
+            <div class="bg-green-900/30 border border-green-500/50 text-green-200 p-4 rounded-lg mb-6">
+                <%= success %>
+            </div>
+        <% } %>
+
+        <!-- Filtros y Búsqueda -->
+        <div class="bg-[#1e2532] p-4 rounded-xl border border-gray-700 mb-6 flex flex-col md:flex-row gap-4 justify-between items-center">
+            <form action="/proyectos" method="GET" class="flex flex-1 w-full gap-4">
+                <div class="relative flex-1">
+                    <i class="fas fa-search absolute left-3 top-3 text-gray-500"></i>
+                    <input type="text" name="search" value="<%= locals.search || '' %>" placeholder="Buscar proyectos..." class="w-full bg-[#121826] border border-gray-700 rounded-lg py-2 pl-10 pr-4 text-white focus:outline-none focus:border-indigo-500 transition">
+                </div>
+                <select name="sort" onchange="this.form.submit()" class="bg-[#121826] border border-gray-700 rounded-lg py-2 px-4 text-white focus:outline-none focus:border-indigo-500 transition">
+                    <option value="date_desc" <%= locals.sort === 'date_desc' ? 'selected' : '' %>>Más recientes</option>
+                    <option value="date_asc" <%= locals.sort === 'date_asc' ? 'selected' : '' %>>Más antiguos</option>
+                    <option value="status" <%= locals.sort === 'status' ? 'selected' : '' %>>Por estado</option>
+                </select>
+            </form>
+        </div>
+
+        <!-- Lista de Proyectos -->
+        <div class="grid grid-cols-1 gap-4">
+            <% if (proyectos.length === 0) { %>
+                <div class="text-center py-10 text-gray-500">
+                    <i class="fas fa-folder-open text-4xl mb-3"></i>
+                    <p>No se encontraron proyectos.</p>
+                </div>
+            <% } else { %>
+                <% proyectos.forEach(proyecto => { %>
+                    <div class="bg-[#1e2532] p-5 rounded-xl border border-gray-700 hover:border-indigo-500/50 transition group">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="text-lg font-bold text-white mb-1"><%= proyecto.nombre %></h3>
+                                <p class="text-gray-400 text-sm mb-3 line-clamp-2"><%= proyecto.descripcion %></p>
+                                <div class="flex items-center gap-3 text-xs">
+                                    <span class="px-2 py-1 rounded-full 
+                                        <%= proyecto.estado === 'Completado' ? 'bg-green-900/50 text-green-300 border border-green-500/30' : 
+                                           proyecto.estado === 'En progreso' ? 'bg-blue-900/50 text-blue-300 border border-blue-500/30' : 
+                                           'bg-gray-700 text-gray-300' %>">
+                                        <%= proyecto.estado %>
+                                    </span>
+                                    <span class="text-gray-500"><i class="far fa-calendar-alt mr-1"></i> <%= new Date(proyecto.created_at).toLocaleDateString() %></span>
+                                </div>
+                            </div>
+                            <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <a href="/proyectos/editar/<%= proyecto.id %>" class="p-2 text-gray-400 hover:text-indigo-400 transition" title="Editar">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <% if (proyecto.estado !== 'Completado') { %>
+                                    <form action="/proyectos/completar/<%= proyecto.id %>" method="POST" class="inline">
+                                        <button type="submit" class="p-2 text-gray-400 hover:text-green-400 transition" title="Completar">
+                                            <i class="fas fa-check"></i>
+                                        </button>
+                                    </form>
+                                <% } %>
+                                <form action="/proyectos/eliminar/<%= proyecto.id %>" method="POST" class="inline" onsubmit="return confirm('¿Estás seguro de eliminar este proyecto?');">
+                                    <button type="submit" class="p-2 text-gray-400 hover:text-red-400 transition" title="Eliminar">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+            <% } %>
+        </div>
+
+        <!-- Paginación -->
+        <% if (totalPages > 1) { %>
+            <div class="flex justify-center mt-8 gap-2">
+                <% if (currentPage > 1) { %>
+                    <a href="/proyectos?page=<%= currentPage - 1 %>&search=<%= locals.search %>&sort=<%= locals.sort %>" class="px-4 py-2 bg-[#1e2532] border border-gray-700 rounded-lg hover:bg-gray-700 transition">Anterior</a>
+                <% } %>
+                <span class="px-4 py-2 text-gray-400">Página <%= currentPage %> de <%= totalPages %></span>
+                <% if (currentPage < totalPages) { %>
+                    <a href="/proyectos?page=<%= currentPage + 1 %>&search=<%= locals.search %>&sort=<%= locals.sort %>" class="px-4 py-2 bg-[#1e2532] border border-gray-700 rounded-lg hover:bg-gray-700 transition">Siguiente</a>
+                <% } %>
+            </div>
+        <% } %>
+
+      </div>
     </main>
   </div>
+
+  <!-- Modal Nuevo Proyecto -->
+  <div id="newProjectModal" class="fixed inset-0 bg-black/70 hidden items-center justify-center z-50 backdrop-blur-sm">
+    <div class="bg-[#1e2532] p-6 rounded-xl border border-gray-700 w-full max-w-md shadow-2xl transform transition-all">
+        <h3 class="text-xl font-bold mb-4">Nuevo Proyecto</h3>
+        <form action="/proyectos/crear" method="POST" class="space-y-4">
+            <div>
+                <label class="block text-sm text-gray-400 mb-1">Nombre del Proyecto</label>
+                <input type="text" name="nombre" required class="w-full bg-[#121826] border border-gray-700 rounded-lg py-2 px-4 text-white focus:outline-none focus:border-indigo-500 transition">
+            </div>
+            <div>
+                <label class="block text-sm text-gray-400 mb-1">Descripción</label>
+                <textarea name="descripcion" rows="3" class="w-full bg-[#121826] border border-gray-700 rounded-lg py-2 px-4 text-white focus:outline-none focus:border-indigo-500 transition"></textarea>
+            </div>
+            <div class="flex justify-end gap-3 mt-6">
+                <button type="button" onclick="toggleModal()" class="px-4 py-2 text-gray-400 hover:text-white transition">Cancelar</button>
+                <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg transition shadow-lg shadow-indigo-500/30">Crear Proyecto</button>
+            </div>
+        </form>
+    </div>
+  </div>
+
+  <script>
+    function toggleModal() {
+        const modal = document.getElementById('newProjectModal');
+        modal.classList.toggle('hidden');
+        modal.classList.toggle('flex');
+    }
+  </script>
 </body>
 </html>

@@ -4,7 +4,7 @@ const db = require('../config/db');
 const isAuth = require('../middlewares/authMiddleware');
 const logger = require('../utils/logger');
 
-router.get('/dashboard', isAuth, async (req, res) => {
+router.get('/home', isAuth, async (req, res) => {
   try {
     // Consulta para obtener el conteo de proyectos por estado
     const [projectStats] = await db.execute(
@@ -12,13 +12,13 @@ router.get('/dashboard', isAuth, async (req, res) => {
       [req.session.userId]
     );
 
-    // Obtener el último proyecto actualizado
-    const [lastProjectResult] = await db.execute(
-      'SELECT nombre, updated_at FROM proyectos WHERE usuario_id = ? ORDER BY updated_at DESC LIMIT 1',
+    // Obtener los últimos 5 proyectos actualizados
+    const [recentProjects] = await db.execute(
+      'SELECT id, nombre, estado, updated_at FROM proyectos WHERE usuario_id = ? ORDER BY updated_at DESC LIMIT 5',
       [req.session.userId]
     );
 
-    const lastProject = lastProjectResult.length > 0 ? lastProjectResult[0] : null;
+    const lastProject = recentProjects.length > 0 ? recentProjects[0] : null;
     const totalProjects = projectStats.reduce((acc, curr) => acc + curr.count, 0);
 
     // Formatear datos para el gráfico
@@ -27,15 +27,18 @@ router.get('/dashboard', isAuth, async (req, res) => {
       data: projectStats.map(stat => stat.count),
     };
 
-    res.render('dashboard', {
+    res.render('home', {
       user: { name: req.session.username },
       chartData: JSON.stringify(chartData), // Pasar como JSON string
       totalProjects,
-      lastProject
+      lastProject,
+      recentProjects,
+      error: req.query.error,
+      success: req.query.success
     });
   } catch (err) {
     logger.error(err);
-    res.status(500).render('error', { message: 'Error al cargar el dashboard' });
+    res.status(500).render('error', { message: 'Error al cargar el home' });
   }
 });
 

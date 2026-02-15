@@ -27,7 +27,7 @@ exports.login = async (req, res, next) => {
     if (user && (await bcrypt.compare(password, user.password))) {
       req.session.userId = user.id;
       req.session.username = user.username;
-      return res.redirect('/dashboard'); // Redirige al área privada
+      return res.redirect('/home'); // Redirige al área privada
     }
 
     res.render('login', { error: 'Email o contraseña incorrectos', showResend: false, email: email });
