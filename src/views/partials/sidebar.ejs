@@ -1,0 +1,11 @@
+<aside class="w-64 bg-[#1e2532] p-6 hidden md:flex flex-col">
+    <a href="/perfil" class="flex items-center gap-3 mb-10 hover:bg-[#2a3344] p-2 -m-2 rounded-lg transition group">
+        <img src="/user-avatar.jpg" class="w-10 h-10 rounded-full border-2 border-indigo-500 group-hover:border-indigo-400 transition" alt="Profile">
+        <div>
+            <p class="text-sm font-bold group-hover:text-white transition"><%= user.name %></p>
+            <p class="text-xs text-gray-400">Admin</p>
+        </div>
+    </a>
+
+    <%- include('navbar') %>
+</aside>

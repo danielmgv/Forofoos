@@ -1,5 +1,6 @@
-const db = require('../config/db');
-const logger = require('../utils/logger');
+// Importamos los modelos de Sequelize
+const { Proyecto } = require('../models');
+const { Op } = require('sequelize');
 
 // LISTAR: Ver todos los proyectos del usuario
 exports.listarProyectos = async (req, res) => {
@@ -8,35 +9,34 @@ exports.listarProyectos = async (req, res) => {
     const limit = 10;
     const offset = (page - 1) * limit;
 
-    let baseQuery = 'FROM proyectos WHERE usuario_id = ?';
-    const params = [req.session.userId];
+    const where = { usuario_id: req.session.userId };
 
     if (req.query.search) {
-      baseQuery += ' AND nombre LIKE ?';
-      params.push(`%${req.query.search}%`);
+      where.nombre = { [Op.like]: `%${req.query.search}%` };
     }
 
     // Lógica de ordenamiento
     const sort = req.query.sort || 'date_desc';
-    let orderByClause = 'ORDER BY created_at DESC';
+    let order = [['createdAt', 'DESC']];
     
     if (sort === 'date_asc') {
-      orderByClause = 'ORDER BY created_at ASC';
+      order = [['createdAt', 'ASC']];
     } else if (sort === 'status') {
-      orderByClause = 'ORDER BY estado ASC, created_at DESC';
+      order = [['estado', 'ASC'], ['createdAt', 'DESC']];
     }
 
-    // 1. Obtener total de elementos para calcular páginas
-    const [countResult] = await db.execute(`SELECT COUNT(*) as total ${baseQuery}`, params);
-    const totalItems = countResult[0].total;
+    // 1. Obtener datos paginados y total usando Sequelize
+    const { count: totalItems, rows } = await Proyecto.findAndCountAll({
+      where,
+      limit,
+      offset,
+      order
+    });
+
     const totalPages = Math.ceil(totalItems / limit);
 
-    // 2. Obtener los datos paginados
-    // Nota: LIMIT y OFFSET se interpolan porque son enteros calculados seguros
-    const [proyectos] = await db.execute(
-      `SELECT * ${baseQuery} ${orderByClause} LIMIT ${limit} OFFSET ${offset}`,
-      params
-    );
+    // Mapear resultados para mantener compatibilidad con la vista (created_at)
+    const proyectos = rows.map(p => ({ ...p.get({ plain: true }), created_at: p.createdAt }));
 
     res.render('proyectos', {
       user: { name: req.session.username },
@@ -47,11 +47,14 @@ exports.listarProyectos = async (req, res) => {
       totalPages,
       totalItems,
       error: req.query.error,
-      success: req.query.success
+      success: req.query.success,
+      suggestion: {
+        userId: req.query.suggest_user,
+        username: req.query.suggest_name,
+      },
     });
   } catch (err) {
-    logger.error(err);
-    res.status(500).render('error', { message: 'Error al cargar los proyectos' });
+    next(err);
   }
 };
 
@@ -68,14 +71,17 @@ exports.crearProyecto = async (req, res) => {
   }
 
   try {
-    await db.execute(
-      'INSERT INTO proyectos (nombre, descripcion, estado, fecha_inicio, usuario_id) VALUES (?, ?, ?, ?, ?)',
-      [nombre, descripcion, estado || 'En progreso', fecha_inicio || new Date(), req.session.userId]
-    );
+    // MIGRACIÓN A SEQUELIZE: Reemplazo de db.execute por Proyecto.create
+    await Proyecto.create({
+      nombre,
+      descripcion,
+      estado: estado || 'En progreso',
+      fecha_inicio: fecha_inicio || new Date(),
+      usuario_id: req.session.userId
+    });
     res.redirect('/proyectos?success=Proyecto creado exitosamente');
   } catch (err) {
-    logger.error(err);
-    res.redirect('/proyectos?error=Error al crear el proyecto');
+    next(err);
   }
 };
 
@@ -83,23 +89,36 @@ exports.crearProyecto = async (req, res) => {
 exports.mostrarFormularioEditar = async (req, res) => {
   const { id } = req.params;
   try {
-    const [rows] = await db.execute(
-      'SELECT * FROM proyectos WHERE id = ? AND usuario_id = ?',
-      [id, req.session.userId]
-    );
-    
-    if (rows.length === 0) {
+    // MIGRACIÓN A SEQUELIZE: Usamos Proyecto.findOne para buscar el proyecto
+    const proyecto = await Proyecto.findOne({
+      where: {
+        id: id,
+        usuario_id: req.session.userId,
+      },
+    });
+
+    if (!proyecto) {
       return res.redirect('/proyectos?error=Proyecto no encontrado');
+    }
+
+    // Preparamos el objeto para la vista, asegurando la compatibilidad de campos.
+    const plainProyecto = proyecto.get({ plain: true });
+
+    // 1. Mapeamos `createdAt` a `created_at` por consistencia con otras vistas.
+    plainProyecto.created_at = plainProyecto.createdAt;
+
+    // 2. Formateamos `fecha_inicio` para el input HTML `type="date"` que espera 'YYYY-MM-DD'.
+    if (plainProyecto.fecha_inicio) {
+      plainProyecto.fecha_inicio = new Date(plainProyecto.fecha_inicio).toISOString().slice(0, 10);
     }
 
     res.render('proyectos_editar', {
       user: { name: req.session.username },
-      proyecto: rows[0],
+      proyecto: plainProyecto,
       error: req.query.error
     });
   } catch (err) {
-    logger.error(err);
-    res.redirect('/proyectos?error=Error al cargar el proyecto');
+    next(err);
   }
 };
 
@@ -113,20 +132,26 @@ exports.editarProyecto = async (req, res) => {
   }
 
   try {
-    // Verificar propiedad antes de actualizar
-    const [check] = await db.execute('SELECT id FROM proyectos WHERE id = ? AND usuario_id = ?', [id, req.session.userId]);
-    if (check.length === 0) {
-      return res.redirect('/proyectos?error=No tienes permiso para editar este proyecto');
-    }
-
-    await db.execute(
-      'UPDATE proyectos SET nombre = ?, descripcion = ?, estado = ?, fecha_inicio = ? WHERE id = ?',
-      [nombre, descripcion, estado, fecha_inicio, id]
+    // MIGRACIÓN A SEQUELIZE: Usamos Proyecto.update con un 'where' para seguridad.
+    // Esto actualiza el registro solo si el ID del proyecto y el ID del usuario en sesión coinciden.
+    const [affectedRows] = await Proyecto.update(
+      { nombre, descripcion, estado, fecha_inicio },
+      {
+        where: {
+          id: id,
+          usuario_id: req.session.userId,
+        },
+      }
     );
-    res.redirect('/proyectos?success=Proyecto actualizado');
+
+    if (affectedRows > 0) {
+      res.redirect('/proyectos?success=Proyecto actualizado');
+    } else {
+      // Si no se afectó ninguna fila, es porque el proyecto no existe o no pertenece al usuario.
+      res.redirect('/proyectos?error=Proyecto no encontrado o no tienes permiso para editarlo');
+    }
   } catch (err) {
-    logger.error(err);
-    res.redirect(`/proyectos/editar/${id}?error=Error al actualizar`);
+    next(err);
   }
 };
 
@@ -135,12 +160,24 @@ exports.completarProyecto = async (req, res) => {
   const { id } = req.params;
   const redirectUrl = req.query.redirect || '/proyectos';
   try {
-    // Actualizamos directamente verificando usuario_id para seguridad
-    await db.execute('UPDATE proyectos SET estado = ? WHERE id = ? AND usuario_id = ?', ['Completado', id, req.session.userId]);
-    res.redirect(`${redirectUrl}?success=Proyecto marcado como completado`);
+    // MIGRACIÓN A SEQUELIZE: Usamos Proyecto.update con 'where' para seguridad
+    const [affectedRows] = await Proyecto.update(
+      { estado: 'Completado' },
+      {
+        where: {
+          id: id,
+          usuario_id: req.session.userId,
+        },
+      }
+    );
+
+    if (affectedRows > 0) {
+      res.redirect(`${redirectUrl}?success=Proyecto marcado como completado`);
+    } else {
+      res.redirect(`${redirectUrl}?error=Proyecto no encontrado o no tienes permiso`);
+    }
   } catch (err) {
-    logger.error(err);
-    res.redirect(`${redirectUrl}?error=Error al actualizar el estado del proyecto`);
+    next(err);
   }
 };
 
@@ -148,10 +185,20 @@ exports.completarProyecto = async (req, res) => {
 exports.eliminarProyecto = async (req, res) => {
   const { id } = req.params;
   try {
-    await db.execute('DELETE FROM proyectos WHERE id = ? AND usuario_id = ?', [id, req.session.userId]);
-    res.redirect('/proyectos?success=Proyecto eliminado');
+    // MIGRACIÓN A SEQUELIZE: Usamos Proyecto.destroy con 'where' para seguridad
+    const affectedRows = await Proyecto.destroy({
+      where: {
+        id: id,
+        usuario_id: req.session.userId,
+      },
+    });
+
+    if (affectedRows > 0) {
+      res.redirect('/proyectos?success=Proyecto eliminado');
+    } else {
+      res.redirect('/proyectos?error=Proyecto no encontrado o no tienes permiso');
+    }
   } catch (err) {
-    logger.error(err);
-    res.redirect('/proyectos?error=Error al eliminar el proyecto');
+    next(err);
   }
 };

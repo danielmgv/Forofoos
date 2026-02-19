@@ -13,21 +13,7 @@
   <div class="flex h-screen overflow-hidden">
     
     <!-- Sidebar -->
-    <aside class="w-64 bg-[#1e2532] p-6 hidden md:flex flex-col">
-        <div class="flex items-center gap-3 mb-10">
-            <img src="/user-avatar.jpg" class="w-10 h-10 rounded-full border-2 border-indigo-500" alt="Profile">
-            <div>
-                <p class="text-sm font-bold"><%= user.name %></p>
-                <p class="text-xs text-gray-400">Admin</p>
-            </div>
-        </div>
-
-        <%- include('partials/navbar') %>
-
-        <div class="mt-auto">
-            <a href="/logout" class="text-gray-400 hover:text-red-400 text-sm"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
-        </div>
-    </aside>
+    <%- include('partials/sidebar') %>
 
     <!-- Main Content -->
     <main class="flex-1 flex flex-col h-screen overflow-hidden bg-[#121826]">

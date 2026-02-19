@@ -11,12 +11,24 @@
 %>
 
 <nav class="space-y-4 flex-1">
-    <a href="/home" class="flex items-center gap-3 p-3 hover:bg-[#2a3344] rounded-lg transition"><i class="fas fa-home"></i> Home</a>
-    <a href="/proyectos" class="flex items-center gap-3 p-3 hover:bg-[#2a3344] rounded-lg transition"><i class="fas fa-briefcase"></i> Proyectos</a>
-    <a href="#" class="flex items-center gap-3 p-3 hover:bg-[#2a3344] rounded-lg transition"><i class="fas fa-users"></i> Community</a>
-    <a href="#" class="flex items-center gap-3 p-3 hover:bg-[#2a3344] rounded-lg transition"><i class="fas fa-chart-line"></i> Analytics</a>
-    <a href="/mensajes" class="flex items-center gap-3 p-3 bg-indigo-600 rounded-lg text-white"><i class="fas fa-envelope"></i> Mensajes</a>
-    <a href="/configuracion" class="flex items-center gap-3 p-3 hover:bg-[#2a3344] rounded-lg transition"><i class="fas fa-cog"></i> Configuración</a>
+    <a href="/home" class="<%= baseClass %> <%= isActive('/home') ? activeClass : inactiveClass %>">
+        <i class="fas fa-home"></i> Home
+    </a>
+    <a href="/proyectos" class="<%= baseClass %> <%= isActive('/proyectos') ? activeClass : inactiveClass %>">
+        <i class="fas fa-briefcase"></i> Proyectos
+    </a>
+    <a href="#" class="<%= baseClass %> <%= isActive('/community') ? activeClass : inactiveClass %>">
+        <i class="fas fa-users"></i> Community
+    </a>
+    <a href="#" class="<%= baseClass %> <%= isActive('/analytics') ? activeClass : inactiveClass %>">
+        <i class="fas fa-chart-line"></i> Analytics
+    </a>
+    <a href="/mensajes" class="<%= baseClass %> <%= isActive('/mensajes') ? activeClass : inactiveClass %>">
+        <i class="fas fa-envelope"></i> Mensajes
+    </a>
+    <a href="/configuracion" class="<%= baseClass %> <%= isActive('/configuracion') ? activeClass : inactiveClass %>">
+        <i class="fas fa-cog"></i> Configuración
+    </a>
 </nav>
 
 <div class="mt-auto">

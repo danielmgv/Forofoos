@@ -47,11 +47,6 @@
                 </div>
 
                 <div>
-                    <label class="block text-sm text-gray-400 mb-1">Fecha de Inicio</label>
-                    <input type="date" name="fecha_inicio" value="<%= proyecto.fecha_inicio ? new Date(proyecto.fecha_inicio).toISOString().split('T')[0] : '' %>" class="w-full bg-[#121826] border border-gray-700 rounded-lg py-2.5 px-4 text-white focus:outline-none focus:border-indigo-500 transition">
-                </div>
-
-                <div>
                     <label class="block text-sm text-gray-400 mb-1">Estado</label>
                     <select name="estado" class="w-full bg-[#121826] border border-gray-700 rounded-lg py-2.5 px-4 text-white focus:outline-none focus:border-indigo-500 transition">
                         <option value="En progreso" <%= proyecto.estado === 'En progreso' ? 'selected' : '' %>>En progreso</option>
@@ -70,16 +65,6 @@
                     </a>
                 </div>
             </form>
-
-            <div class="mt-8 pt-6 border-t border-gray-700">
-                <h3 class="text-red-400 font-bold mb-2">Zona de Peligro</h3>
-                <p class="text-gray-400 text-sm mb-4">Esta acción no se puede deshacer.</p>
-                <form action="/proyectos/eliminar/<%= proyecto.id %>" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar este proyecto?');">
-                    <button type="submit" class="text-red-400 hover:text-red-300 border border-red-900/50 hover:bg-red-900/20 px-4 py-2 rounded-lg transition text-sm">
-                        <i class="fas fa-trash mr-2"></i> Eliminar Proyecto
-                    </button>
-                </form>
-            </div>
         </div>
 
       </div>

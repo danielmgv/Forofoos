@@ -5,6 +5,7 @@ const path = require('path');
 const app = express();
 const authRoutes = require('./src/routes/authRoutes');
 const logger = require('./src/utils/logger');
+const { sequelize } = require('./src/models'); // Importar conexión Sequelize
 
 // Motor de vistas
 app.set('view engine', 'ejs');
@@ -63,6 +64,8 @@ app.use('/', authRoutes);
 app.use('/', require('./src/routes/home'));
 app.use('/', require('./src/routes/publicaciones'));
 app.use('/', require('./src/routes/proyectos'));
+app.use('/', require('./src/routes/perfil'));
+app.use('/', require('./src/routes/community'));
 app.use('/', require('./src/routes/views'));
 
 // Middleware global de errores (último middleware)
@@ -117,8 +120,15 @@ module.exports = app;
 // Iniciar servidor si este archivo se ejecuta directamente
 if (require.main === module) {
   const PORT = process.env.PORT || 3000;
-  app.listen(PORT, () => {
-    console.log(`\n🚀 Servidor escuchando en http://localhost:${PORT}`);
-    app.logRegisteredRoutes();
-  });
+  
+  // Sincronizar Sequelize (sin {force: true} para no borrar datos) y luego iniciar server
+  sequelize.authenticate()
+    .then(() => {
+      console.log('✅ Conexión a DB con Sequelize establecida.');
+      app.listen(PORT, () => {
+        console.log(`\n🚀 Servidor escuchando en http://localhost:${PORT}`);
+        app.logRegisteredRoutes();
+      });
+    })
+    .catch(err => console.error('❌ Error conectando a la DB:', err));
 }

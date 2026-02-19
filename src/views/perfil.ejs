@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Perfil - ForoFoos</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-[#121826] text-gray-200 font-sans">
+
+  <div class="flex h-screen overflow-hidden">
+    
+    <!-- Sidebar -->
+    <%- include('partials/sidebar') %>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col h-screen overflow-hidden bg-[#121826]">
+      <div class="flex-1 overflow-y-auto p-6">
+        
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-2xl font-bold">Mi Perfil</h1>
+            <a href="/configuracion" class="text-indigo-400 hover:text-indigo-300 text-sm flex items-center gap-2 transition">
+                <i class="fas fa-cog"></i> Editar Configuración
+            </a>
+        </div>
+
+        <!-- Tarjeta de Perfil -->
+        <div class="bg-[#1e2532] rounded-xl border border-gray-700 overflow-hidden max-w-4xl shadow-xl">
+            <!-- Banner -->
+            <div class="h-32 bg-gradient-to-r from-indigo-900 to-purple-900 relative">
+                <div class="absolute inset-0 bg-black/20"></div>
+            </div>
+            
+            <div class="px-8 pb-8">
+                <div class="relative flex flex-col md:flex-row justify-between items-end -mt-12 mb-6 gap-4">
+                    <div class="flex items-end gap-6">
+                        <img src="/user-avatar.jpg" class="w-24 h-24 rounded-full border-4 border-[#1e2532] bg-[#1e2532] shadow-lg" alt="Avatar">
+                        <div class="mb-1">
+                            <h2 class="text-2xl font-bold text-white"><%= profile.username %></h2>
+                            <p class="text-gray-400 text-sm"><%= profile.email %></p>
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        <span class="bg-indigo-900/50 text-indigo-300 border border-indigo-500/30 px-3 py-1 rounded-full text-xs flex items-center gap-2">
+                            <i class="fas fa-shield-alt"></i> Cuenta <%= profile.is_verified ? 'Verificada' : 'Registrada' %>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8 border-t border-gray-700 pt-8">
+                    <div class="text-center">
+                        <p class="text-gray-400 text-xs uppercase tracking-wider mb-1">Proyectos Totales</p>
+                        <p class="text-3xl font-bold text-white"><%= stats.projects %></p>
+                    </div>
+                    <div class="text-center border-l border-gray-700">
+                        <p class="text-gray-400 text-xs uppercase tracking-wider mb-1">Miembro Desde</p>
+                        <p class="text-xl font-bold text-white"><%= new Date(profile.created_at).toLocaleDateString('es-ES', { month: 'long', year: 'numeric' }) %></p>
+                    </div>
+                    <div class="text-center border-l border-gray-700">
+                        <p class="text-gray-400 text-xs uppercase tracking-wider mb-1">Rol</p>
+                        <p class="text-xl font-bold text-indigo-400">Administrador</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+</body>
+</html>

@@ -18,10 +18,32 @@ module.exports = (err, req, res, next) => {
     });
   }
 
+  // Si la petición viene del formulario de login, renderizamos la misma vista
+  // para no sacar al usuario del flujo.
+  if (req && (req.path === '/login' || req.path === '/auth/login')) {
+    return res.status(200).render('login', {
+      error: 'Ocurrió un error inesperado. Por favor, inténtalo más tarde.',
+      showResend: false,
+      email: req.body.email || '',
+    });
+  }
+
   if (req && req.path === '/auth/resend-verification') {
     return res.status(200).render('register', {
       error: 'No se pudo reenviar el correo en este momento. Por favor inténtalo más tarde.',
     });
+  }
+
+  // Para errores en las rutas de proyectos, redirigimos con un mensaje amigable.
+  if (req && req.path && req.path.startsWith('/proyectos')) {
+    return res.redirect('/proyectos?error=Ocurrió un error inesperado. Inténtalo más tarde.');
+  }
+
+  // Para errores al cambiar la contraseña, redirigimos a la página de configuración.
+  if (req && req.path === '/auth/change-password') {
+    return res.redirect(
+      '/configuracion?error=Ocurrió un error inesperado al cambiar la contraseña.'
+    );
   }
 
   // Soporta HTML y JSON según lo que el cliente acepte

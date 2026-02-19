@@ -1,4 +1,5 @@
-const db = require('../config/db');
+const { User, Proyecto } = require('../models');
+const { Op } = require('sequelize');
 const bcrypt = require('bcrypt');
 const logger = require('../utils/logger');
 const crypto = require('crypto');
@@ -13,10 +14,9 @@ exports.showLogin = (req, res) => {
 exports.login = async (req, res, next) => {
   const { email, password } = req.body;
   try {
-    const [rows] = await db.execute('SELECT * FROM users WHERE email = ?', [email]);
-    const user = rows[0];
+    const user = await User.findOne({ where: { email } });
 
-    if (user && !(user.is_verified)) {
+    if (user && !user.is_verified) {
       return res.render('login', {
         error: 'Debes confirmar tu correo antes de iniciar sesión. Revisa tu bandeja.',
         showResend: true,
@@ -64,53 +64,45 @@ exports.register = async (req, res, next) => {
   }
 
   try {
-    const [rows] = await db.execute('SELECT * FROM users WHERE email = ? OR username = ?', [email, username]);
-    if (rows.length) {
+    const existingUsers = await User.findAll({
+      where: {
+        [Op.or]: [{ email: email }, { username: username }],
+      },
+    });
+
+    if (existingUsers.length > 0) {
       // Distinguir si existe por email o username
-      const existsByEmail = rows.some((r) => r.email === email);
-      const existsByUsername = rows.some((r) => r.username === username);
+      const existsByEmail = existingUsers.some((u) => u.email === email);
+      const existsByUsername = existingUsers.some((u) => u.username === username);
       if (existsByEmail) return res.render('register', { error: 'Ya existe un usuario con ese email' });
       if (existsByUsername) return res.render('register', { error: 'El nombre de usuario ya está en uso' });
       return res.render('register', { error: 'El usuario ya existe' });
     }
 
     const hashed = await bcrypt.hash(password, 10);
-    const [result] = await db.execute('INSERT INTO users (username, email, password) VALUES (?, ?, ?)', [
-      username,
-      email,
-      hashed,
-    ]);
-
-    // Generar token de verificación y guardarlo
     const token = crypto.randomBytes(32).toString('hex');
     const expires = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 horas
-    const userId = result && result.insertId ? result.insertId : null;
-    if (userId) {
-      await db.execute('UPDATE users SET verification_token = ?, verification_expires = ? WHERE id = ?', [
-        token,
-        expires,
-        userId,
-      ]);
 
-      // Enviar email de verificación (si falla, mostramos mensaje genérico)
-      const verifyUrl = `${process.env.APP_URL || 'http://localhost:3000'}/auth/verify?token=${token}`;
-      try {
-        await mailer.sendVerificationEmail({ to: email, username, url: verifyUrl });
-      } catch (e) {
-        logger.warn('No se pudo enviar el email de verificación', { to: email, link: verifyUrl, err: e && e.message });
-      }
+    await User.create({
+      username,
+      email,
+      password: hashed,
+      verification_token: token,
+      verification_expires: expires,
+    });
+
+    // Enviar email de verificación (si falla, mostramos mensaje genérico)
+    const verifyUrl = `${process.env.APP_URL || 'http://localhost:3000'}/auth/verify?token=${token}`;
+    try {
+      await mailer.sendVerificationEmail({ to: email, username, url: verifyUrl });
+    } catch (e) {
+      logger.warn('No se pudo enviar el email de verificación', { to: email, link: verifyUrl, err: e && e.message });
     }
 
     // Mostrar pantalla de registro con instrucción para verificar el email
     return res.status(200).render('register', { error: 'Cuenta creada. Revisa tu correo para confirmar la cuenta.' });
   } catch (error) {
-    // Log completo para los mantenedores
-    logger.error(error);
-    // Mostrar un mensaje controlado y estético en la misma página de registro
-    // para no romper la experiencia de usuario.
-    return res.status(200).render('register', {
-      error: 'No se pudo crear la cuenta en este momento. Por favor inténtalo más tarde.',
-    });
+    next(error);
   }
 };
 
@@ -125,15 +117,19 @@ exports.verify = async (req, res, next) => {
   const { token } = req.query;
   if (!token) return res.status(400).render('error', { message: 'Token inválido', error: {} });
   try {
-    const [rows] = await db.execute('SELECT * FROM users WHERE verification_token = ? AND verification_expires > NOW()', [
-      token,
-    ]);
-    if (!rows.length) return res.status(400).render('error', { message: 'Token inválido o expirado', error: {} });
-    const user = rows[0];
-    await db.execute('UPDATE users SET is_verified = 1, verification_token = NULL, verification_expires = NULL WHERE id = ?', [
-      user.id,
-    ]);
-    // Render a confirmation page so E2E can detect success
+    const user = await User.findOne({
+      where: {
+        verification_token: token,
+        verification_expires: { [Op.gt]: new Date() },
+      },
+    });
+    if (!user) return res.status(400).render('error', { message: 'Token inválido o expirado', error: {} });
+
+    user.is_verified = true;
+    user.verification_token = null;
+    user.verification_expires = null;
+    await user.save();
+
     return res.render('confirm', { message: 'Correo verificado. Ya puedes iniciar sesión.' });
   } catch (err) {
     next(err);
@@ -145,14 +141,18 @@ exports.resendVerification = async (req, res, next) => {
   const { email } = req.body;
   if (!email) return res.status(400).render('register', { error: 'Proporciona un email válido' });
   try {
-    const [rows] = await db.execute('SELECT * FROM users WHERE email = ?', [email]);
-    const user = rows[0];
+    const user = await User.findOne({ where: { email } });
+
     if (!user) return res.status(200).render('register', { error: 'Si la cuenta existe, recibirás un correo' });
     if (user.is_verified) return res.status(200).render('register', { error: 'La cuenta ya está verificada. Puedes iniciar sesión.' });
 
     const token = crypto.randomBytes(32).toString('hex');
     const expires = new Date(Date.now() + 24 * 60 * 60 * 1000);
-    await db.execute('UPDATE users SET verification_token = ?, verification_expires = ? WHERE id = ?', [token, expires, user.id]);
+
+    user.verification_token = token;
+    user.verification_expires = expires;
+    await user.save();
+
     const verifyUrl = `${process.env.APP_URL || 'http://localhost:3000'}/auth/verify?token=${token}`;
     try {
       await mailer.sendVerificationEmail({ to: user.email, username: user.username, url: verifyUrl });
@@ -183,18 +183,46 @@ exports.changePassword = async (req, res) => {
   }
 
   try {
-    const [rows] = await db.execute('SELECT password FROM users WHERE id = ?', [req.session.userId]);
-    const user = rows[0];
+    const user = await User.findByPk(req.session.userId);
+
+    if (!user) {
+      return res.redirect('/configuracion?error=Usuario no encontrado');
+    }
 
     const match = await bcrypt.compare(currentPassword, user.password);
     if (!match) return res.redirect('/configuracion?error=La contraseña actual es incorrecta');
 
     const hashed = await bcrypt.hash(newPassword, 10);
-    await db.execute('UPDATE users SET password = ? WHERE id = ?', [hashed, req.session.userId]);
+    await user.update({ password: hashed });
 
     res.redirect('/configuracion?success=Contraseña actualizada correctamente');
   } catch (err) {
-    logger.error(err);
-    res.redirect('/configuracion?error=Error al actualizar la contraseña');
+    next(err);
+  }
+};
+
+// Mostrar perfil de usuario
+exports.perfil = async (req, res, next) => {
+  try {
+    // Obtener datos del usuario
+    const userProfile = await User.findByPk(req.session.userId, {
+      attributes: ['id', 'username', 'email', 'createdAt', 'is_verified'],
+    });
+
+    if (!userProfile) {
+      return res.redirect('/login');
+    }
+
+    // Obtener estadísticas (ej. total de proyectos)
+    const totalProjects = await Proyecto.count({
+      where: { usuario_id: req.session.userId },
+    });
+
+    res.render('perfil', {
+      profile: { ...userProfile.get({ plain: true }), created_at: userProfile.createdAt },
+      stats: { projects: totalProjects },
+    });
+  } catch (error) {
+    next(error);
   }
 };

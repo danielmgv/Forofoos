@@ -5,7 +5,9 @@
     <li><a href="/proyectos">Proyectos</a></li>
     <!-- Si tienes una ruta específica para mensajes, asegúrate de incluirla aquí -->
     <li><a href="/mensajes">Mensajes</a></li>
-
+    <li class="nav-item">
+      <a class="nav-link <%= path === '/community' ? 'active' : '' %>" href="/community">Comunidad</a>
+    </li>
     <% if (typeof user !== 'undefined' && user) { %>
       <!-- Opciones para usuarios logueados -->
       <li><span>Hola, <%= user.name %></span></li>
